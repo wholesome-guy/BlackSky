@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07080ee345f3c7b42850a8569c2d58b2, type: 3}
+  m_Name: SpaceShip_Values #1
+  m_EditorClassIdentifier: 
+  Min_Low_Roll: 6000
+  Min_Moderate_Roll: 8000
+  Min_High_Roll: 10000
+  Max_Low_Roll: 8000
+  Max_Moderate_Roll: 10000
+  Max_High_Roll: 12000
+  Min_To_Max_Duartion_Roll: 2
+  Min_Low_Pitch: 2000
+  Min_Moderate_Pitch: 4000
+  Min_High_Pitch: 6000
+  Max_Low_Pitch: 4000
+  Max_Moderate_Pitch: 6000
+  Max_High_Pitch: 8000
+  Min_To_Max_Duartion_Pitch: 2
+  Min_Low_Yaw: 2000
+  Min_Moderate_Yaw: 4000
+  Min_High_Yaw: 6000
+  Max_Low_Yaw: 4000
+  Max_Moderate_Yaw: 6000
+  Max_High_Yaw: 8000
+  Min_To_Max_Duartion_Yaw: 2
+  Max_Low_Throttle: 30960
+  Max_Moderate_Throttle: 39415
+  Max_High_Throttle: 50000
+  Min_To_Max_Duartion_Throttle: 5
+  Mass: 200
+  Low_Linear_Drag: 2.5
+  Moderate_Linear_Drag: 1.5
+  High_Linear_Drag: 1
+  Low_Angular_Drag: 2.5
+  Moderate_Angular_Drag: 1.5
+  High_Angular_Drag: 1
+  Max_Fuel: 10000
+  Low_Throttle_Fuel_Consumption: 100
+  Moderate_Throttle_Fuel_Consumption: 250
+  High_Throttle_Fuel_Consumption: 500
+  Refuel_Amount: 1000
+  Nitro: 100000
+  Max_Nitro: 1000
+  Nitro_Comsumption: 100
+  Renitro_Amount: 200
+  Max_Health: 10000
+  Regenerate_Health_Amount: 10
+  Payload: 50000
