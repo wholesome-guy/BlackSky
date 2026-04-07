@@ -39,26 +39,29 @@ public class InputManager : MonoBehaviour
 
     }
 
-    public Vector2 ThrottleInput { get; private set; }
-    public Vector2 PitchYawInput { get; private set; }
-    public float RollInput { get; private set; }
+    public Vector2 PitchYawRollInput { get; private set; }
 
     public bool aimBool = false;
+    public bool JoystickReleased { get; private set; }
 
     public static Action OnShoot;
 
     private void Start()
     {
-        Cursor.visible = false;
+        JoystickReleased = false;
     }
-
     private void Update()
     {
-        ThrottleInput = _spaceshipControls.Spaceship.Throttle.ReadValue<Vector2>().normalized;
+        PitchYawRollInput = _spaceshipControls.Spaceship.PitchYawRoll.ReadValue<Vector2>().normalized;
 
-        PitchYawInput = _spaceshipControls.Spaceship.Pitch_Yaw.ReadValue<Vector2>().normalized;
-
-        RollInput = _spaceshipControls.Spaceship.Roll.ReadValue<float>();
+        if(PitchYawRollInput.sqrMagnitude <= 0)
+        {
+            JoystickReleased = true;
+        }
+        else
+        {
+            JoystickReleased = false;
+        }
     }
 
     private void ShootInput(InputAction.CallbackContext context)

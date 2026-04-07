@@ -31,7 +31,7 @@ public class CannonAim : MonoBehaviour
         Vector3 targetPosition;
         RaycastHit hit;
 
-        Ray inputRay = Camera.main.ScreenPointToRay(InputLookDirection(_inputManager.PitchYawInput));
+        Ray inputRay = Camera.main.ScreenPointToRay(InputLookDirection(_inputManager.PitchYawRollInput));
 
         if (Physics.Raycast(inputRay, out hit))
         {

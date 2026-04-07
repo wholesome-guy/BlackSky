@@ -93,33 +93,6 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
             ""id"": ""cb4a3447-95c8-473c-a70b-2c31dec8faa4"",
             ""actions"": [
                 {
-                    ""name"": ""Throttle"",
-                    ""type"": ""Value"",
-                    ""id"": ""fdb5a764-d837-4795-9cc2-a2cf665cc167"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Pitch_Yaw"",
-                    ""type"": ""Value"",
-                    ""id"": ""4fd1cd5c-ef91-482d-967b-7c0f27a892a1"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Roll"",
-                    ""type"": ""Value"",
-                    ""id"": ""852ff90a-6d09-43f3-ab11-970b3373335c"",
-                    ""expectedControlType"": ""Axis"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""Shoot"",
                     ""type"": ""Button"",
                     ""id"": ""a503b15e-abe9-4ce7-a533-2b10e3745325"",
@@ -136,204 +109,26 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PitchYawRoll"",
+                    ""type"": ""Value"",
+                    ""id"": ""c0a61b9f-632a-468a-85bc-91189e0f1ef7"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""7c48e1a6-6dd5-4769-a94b-3a5b25dd6241"",
-                    ""path"": ""<Gamepad>/leftStick"",
+                    ""id"": ""e06e5e68-b58c-46d0-a18f-ee92038f7333"",
+                    ""path"": ""<AndroidJoystick>/stick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Throttle"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""2D Vector"",
-                    ""id"": ""90921c21-f614-4aa4-bc99-c4fb52e7be3b"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Throttle"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""5dcb8cbf-cdb6-4c2d-b214-9430deeb7a57"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Throttle"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""16e751c9-e0be-4b03-86d1-5159d6822aaa"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Throttle"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""539d0a27-9e18-4e58-8c0b-7aeb91898976"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Throttle"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""09f7b295-22de-409a-992e-5c17cae748f8"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Throttle"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""2c66068f-47e0-4d74-9437-c656e959e235"",
-                    ""path"": ""<Gamepad>/rightStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pitch_Yaw"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f1040d68-800c-4802-9c50-3d1c70b5cae8"",
-                    ""path"": ""<Mouse>/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pitch_Yaw"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""2ae06faa-6694-40fd-b660-8831c3ed1148"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Roll"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""591e1d08-1250-4b6b-b59a-34ba36ee24b7"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Roll"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""26b0fde9-b463-4c60-b0f8-7f0079a2c23b"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Roll"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""a366ba6f-4cbf-4e7c-ae07-021c3385a8bd"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Roll"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""ee90044d-beda-4e87-8a76-6f5ba88a0461"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Roll"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""5d7bcaa9-d209-4003-ac9b-da094f232350"",
-                    ""path"": ""<Keyboard>/ctrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Roll"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""dd5a9bc7-e102-4ed7-b79f-2e92bbc7621a"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a409e504-4595-4778-ada7-578ef5fec64a"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b41228d0-ca37-4ad1-bf13-88ed87f04389"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Aim"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8e9605c5-879b-479d-bf1c-62c2a7225180"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Aim"",
+                    ""action"": ""PitchYawRoll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -344,11 +139,9 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
 }");
         // Spaceship
         m_Spaceship = asset.FindActionMap("Spaceship", throwIfNotFound: true);
-        m_Spaceship_Throttle = m_Spaceship.FindAction("Throttle", throwIfNotFound: true);
-        m_Spaceship_Pitch_Yaw = m_Spaceship.FindAction("Pitch_Yaw", throwIfNotFound: true);
-        m_Spaceship_Roll = m_Spaceship.FindAction("Roll", throwIfNotFound: true);
         m_Spaceship_Shoot = m_Spaceship.FindAction("Shoot", throwIfNotFound: true);
         m_Spaceship_Aim = m_Spaceship.FindAction("Aim", throwIfNotFound: true);
+        m_Spaceship_PitchYawRoll = m_Spaceship.FindAction("PitchYawRoll", throwIfNotFound: true);
     }
 
     ~@Spaceship_Controls()
@@ -429,11 +222,9 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
     // Spaceship
     private readonly InputActionMap m_Spaceship;
     private List<ISpaceshipActions> m_SpaceshipActionsCallbackInterfaces = new List<ISpaceshipActions>();
-    private readonly InputAction m_Spaceship_Throttle;
-    private readonly InputAction m_Spaceship_Pitch_Yaw;
-    private readonly InputAction m_Spaceship_Roll;
     private readonly InputAction m_Spaceship_Shoot;
     private readonly InputAction m_Spaceship_Aim;
+    private readonly InputAction m_Spaceship_PitchYawRoll;
     /// <summary>
     /// Provides access to input actions defined in input action map "Spaceship".
     /// </summary>
@@ -446,18 +237,6 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
         /// </summary>
         public SpaceshipActions(@Spaceship_Controls wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "Spaceship/Throttle".
-        /// </summary>
-        public InputAction @Throttle => m_Wrapper.m_Spaceship_Throttle;
-        /// <summary>
-        /// Provides access to the underlying input action "Spaceship/Pitch_Yaw".
-        /// </summary>
-        public InputAction @Pitch_Yaw => m_Wrapper.m_Spaceship_Pitch_Yaw;
-        /// <summary>
-        /// Provides access to the underlying input action "Spaceship/Roll".
-        /// </summary>
-        public InputAction @Roll => m_Wrapper.m_Spaceship_Roll;
-        /// <summary>
         /// Provides access to the underlying input action "Spaceship/Shoot".
         /// </summary>
         public InputAction @Shoot => m_Wrapper.m_Spaceship_Shoot;
@@ -465,6 +244,10 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Spaceship/Aim".
         /// </summary>
         public InputAction @Aim => m_Wrapper.m_Spaceship_Aim;
+        /// <summary>
+        /// Provides access to the underlying input action "Spaceship/PitchYawRoll".
+        /// </summary>
+        public InputAction @PitchYawRoll => m_Wrapper.m_Spaceship_PitchYawRoll;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -491,21 +274,15 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_SpaceshipActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_SpaceshipActionsCallbackInterfaces.Add(instance);
-            @Throttle.started += instance.OnThrottle;
-            @Throttle.performed += instance.OnThrottle;
-            @Throttle.canceled += instance.OnThrottle;
-            @Pitch_Yaw.started += instance.OnPitch_Yaw;
-            @Pitch_Yaw.performed += instance.OnPitch_Yaw;
-            @Pitch_Yaw.canceled += instance.OnPitch_Yaw;
-            @Roll.started += instance.OnRoll;
-            @Roll.performed += instance.OnRoll;
-            @Roll.canceled += instance.OnRoll;
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
             @Aim.started += instance.OnAim;
             @Aim.performed += instance.OnAim;
             @Aim.canceled += instance.OnAim;
+            @PitchYawRoll.started += instance.OnPitchYawRoll;
+            @PitchYawRoll.performed += instance.OnPitchYawRoll;
+            @PitchYawRoll.canceled += instance.OnPitchYawRoll;
         }
 
         /// <summary>
@@ -517,21 +294,15 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="SpaceshipActions" />
         private void UnregisterCallbacks(ISpaceshipActions instance)
         {
-            @Throttle.started -= instance.OnThrottle;
-            @Throttle.performed -= instance.OnThrottle;
-            @Throttle.canceled -= instance.OnThrottle;
-            @Pitch_Yaw.started -= instance.OnPitch_Yaw;
-            @Pitch_Yaw.performed -= instance.OnPitch_Yaw;
-            @Pitch_Yaw.canceled -= instance.OnPitch_Yaw;
-            @Roll.started -= instance.OnRoll;
-            @Roll.performed -= instance.OnRoll;
-            @Roll.canceled -= instance.OnRoll;
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
             @Shoot.canceled -= instance.OnShoot;
             @Aim.started -= instance.OnAim;
             @Aim.performed -= instance.OnAim;
             @Aim.canceled -= instance.OnAim;
+            @PitchYawRoll.started -= instance.OnPitchYawRoll;
+            @PitchYawRoll.performed -= instance.OnPitchYawRoll;
+            @PitchYawRoll.canceled -= instance.OnPitchYawRoll;
         }
 
         /// <summary>
@@ -573,27 +344,6 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
     public interface ISpaceshipActions
     {
         /// <summary>
-        /// Method invoked when associated input action "Throttle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnThrottle(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Pitch_Yaw" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnPitch_Yaw(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Roll" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnRoll(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "Shoot" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -607,5 +357,12 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAim(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PitchYawRoll" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPitchYawRoll(InputAction.CallbackContext context);
     }
 }
