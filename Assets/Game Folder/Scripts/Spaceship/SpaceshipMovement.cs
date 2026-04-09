@@ -3,35 +3,55 @@ using UnityEngine;
 public class SpaceshipMovement : MonoBehaviour
 {
 
+    [Header("Spaceship Body")]
     [SerializeField] private Rigidbody _spaceshipRigidbody;
     [SerializeField] private Transform _spaceshipMesh;
     [SerializeField] private Transform _cannons;
-    private InputManager _inputManager;
 
-    [SerializeField] private float _maxThrottle;
+    [Header("Physics Values")]
+    [SerializeField] private float _lowThrottle;
+    [SerializeField] private float _moderateThrottle;
+    [SerializeField] private float _highThrottle;
+    private float _throttle;
     [SerializeField] private float _yawTorque;
     [SerializeField] private float _pitchTorque;
-
     [SerializeField] private float _rollClamp;
 
-
+    private InputManager _inputManager;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _inputManager = InputManager.Instance;
-
+        _throttle = _lowThrottle;
     }
 
     private void FixedUpdate()
     {
         RotationalMovement();
+        LinearMovement();
+    }
+
+    private void SelectThrottle(int i)
+    {
+        switch(i)
+        {
+            case 0:
+                _throttle = _lowThrottle;
+                break;
+            case 1:
+                _throttle = _moderateThrottle;
+                break;
+            case 2:
+                _throttle = _highThrottle;
+                break;
+        }
     }
 
     private void LinearMovement()
     {
-        
+        _spaceshipRigidbody.AddForce(_throttle * transform.forward, ForceMode.Acceleration);
     }
 
     private void RotationalMovement()
@@ -67,5 +87,6 @@ public class SpaceshipMovement : MonoBehaviour
         }
         
     }
+
 
 }

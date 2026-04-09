@@ -7,6 +7,17 @@ public class InputManager : MonoBehaviour
     public static InputManager Instance { get; private set; }
     private Spaceship_Controls _spaceshipControls;
 
+    [Header("Joystick")]
+    [SerializeField] private FloatingJoystick _floatingJoystickScript;
+    [SerializeField] private GameObject _floatingJoystick;
+    [SerializeField] private GameObject _fixedJoystick;
+    private bool _isFloatingJoystickActive = false;
+
+
+    public Vector2 PitchYawRollInput { get; private set; }
+    public bool aimBool {  get; private set; }
+
+    public static Action OnShoot;
     private void Awake()
     {
         if(Instance != null && Instance != this)
@@ -39,29 +50,15 @@ public class InputManager : MonoBehaviour
 
     }
 
-    public Vector2 PitchYawRollInput { get; private set; }
 
-    public bool aimBool = false;
-    public bool JoystickReleased { get; private set; }
-
-    public static Action OnShoot;
 
     private void Start()
     {
-        JoystickReleased = false;
+        aimBool = false;
     }
     private void Update()
     {
-        PitchYawRollInput = _spaceshipControls.Spaceship.PitchYawRoll.ReadValue<Vector2>().normalized;
-
-        if(PitchYawRollInput.sqrMagnitude <= 0)
-        {
-            JoystickReleased = true;
-        }
-        else
-        {
-            JoystickReleased = false;
-        }
+        JoystickInput();
     }
 
     private void ShootInput(InputAction.CallbackContext context)
@@ -72,8 +69,32 @@ public class InputManager : MonoBehaviour
     {
         aimBool = !aimBool;
     }
-
-
+   
+    public void ChangeJoystick(bool boolean)
+    {
+        _isFloatingJoystickActive = boolean;
+        if(_isFloatingJoystickActive)
+        {
+            _floatingJoystick.SetActive(true);
+            _fixedJoystick.SetActive(false);
+        }
+        else
+        {
+            _floatingJoystick.SetActive(false);
+            _fixedJoystick.SetActive(true);
+        }
+    }
+    private void JoystickInput()
+    {
+        if (_isFloatingJoystickActive)
+        {
+            PitchYawRollInput = _floatingJoystickScript.JoystickInput;
+        }
+        else
+        {
+            PitchYawRollInput = _spaceshipControls.Spaceship.PitchYawRoll.ReadValue<Vector2>().normalized;
+        }
+    }
 
 
 
