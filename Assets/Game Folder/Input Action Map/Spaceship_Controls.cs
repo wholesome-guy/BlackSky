@@ -91,57 +91,14 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
         {
             ""name"": ""Spaceship"",
             ""id"": ""cb4a3447-95c8-473c-a70b-2c31dec8faa4"",
-            ""actions"": [
-                {
-                    ""name"": ""Shoot"",
-                    ""type"": ""Button"",
-                    ""id"": ""a503b15e-abe9-4ce7-a533-2b10e3745325"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Aim"",
-                    ""type"": ""Button"",
-                    ""id"": ""f9bdf41e-a5d0-4b37-86b0-c296d937eca8"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""PitchYawRoll"",
-                    ""type"": ""Value"",
-                    ""id"": ""c0a61b9f-632a-468a-85bc-91189e0f1ef7"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""e06e5e68-b58c-46d0-a18f-ee92038f7333"",
-                    ""path"": ""<AndroidJoystick>/stick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""PitchYawRoll"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
+            ""actions"": [],
+            ""bindings"": []
         }
     ],
     ""controlSchemes"": []
 }");
         // Spaceship
         m_Spaceship = asset.FindActionMap("Spaceship", throwIfNotFound: true);
-        m_Spaceship_Shoot = m_Spaceship.FindAction("Shoot", throwIfNotFound: true);
-        m_Spaceship_Aim = m_Spaceship.FindAction("Aim", throwIfNotFound: true);
-        m_Spaceship_PitchYawRoll = m_Spaceship.FindAction("PitchYawRoll", throwIfNotFound: true);
     }
 
     ~@Spaceship_Controls()
@@ -222,9 +179,6 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
     // Spaceship
     private readonly InputActionMap m_Spaceship;
     private List<ISpaceshipActions> m_SpaceshipActionsCallbackInterfaces = new List<ISpaceshipActions>();
-    private readonly InputAction m_Spaceship_Shoot;
-    private readonly InputAction m_Spaceship_Aim;
-    private readonly InputAction m_Spaceship_PitchYawRoll;
     /// <summary>
     /// Provides access to input actions defined in input action map "Spaceship".
     /// </summary>
@@ -236,18 +190,6 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public SpaceshipActions(@Spaceship_Controls wrapper) { m_Wrapper = wrapper; }
-        /// <summary>
-        /// Provides access to the underlying input action "Spaceship/Shoot".
-        /// </summary>
-        public InputAction @Shoot => m_Wrapper.m_Spaceship_Shoot;
-        /// <summary>
-        /// Provides access to the underlying input action "Spaceship/Aim".
-        /// </summary>
-        public InputAction @Aim => m_Wrapper.m_Spaceship_Aim;
-        /// <summary>
-        /// Provides access to the underlying input action "Spaceship/PitchYawRoll".
-        /// </summary>
-        public InputAction @PitchYawRoll => m_Wrapper.m_Spaceship_PitchYawRoll;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -274,15 +216,6 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_SpaceshipActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_SpaceshipActionsCallbackInterfaces.Add(instance);
-            @Shoot.started += instance.OnShoot;
-            @Shoot.performed += instance.OnShoot;
-            @Shoot.canceled += instance.OnShoot;
-            @Aim.started += instance.OnAim;
-            @Aim.performed += instance.OnAim;
-            @Aim.canceled += instance.OnAim;
-            @PitchYawRoll.started += instance.OnPitchYawRoll;
-            @PitchYawRoll.performed += instance.OnPitchYawRoll;
-            @PitchYawRoll.canceled += instance.OnPitchYawRoll;
         }
 
         /// <summary>
@@ -294,15 +227,6 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="SpaceshipActions" />
         private void UnregisterCallbacks(ISpaceshipActions instance)
         {
-            @Shoot.started -= instance.OnShoot;
-            @Shoot.performed -= instance.OnShoot;
-            @Shoot.canceled -= instance.OnShoot;
-            @Aim.started -= instance.OnAim;
-            @Aim.performed -= instance.OnAim;
-            @Aim.canceled -= instance.OnAim;
-            @PitchYawRoll.started -= instance.OnPitchYawRoll;
-            @PitchYawRoll.performed -= instance.OnPitchYawRoll;
-            @PitchYawRoll.canceled -= instance.OnPitchYawRoll;
         }
 
         /// <summary>
@@ -343,26 +267,5 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
     /// <seealso cref="SpaceshipActions.RemoveCallbacks(ISpaceshipActions)" />
     public interface ISpaceshipActions
     {
-        /// <summary>
-        /// Method invoked when associated input action "Shoot" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnShoot(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Aim" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnAim(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "PitchYawRoll" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnPitchYawRoll(InputAction.CallbackContext context);
     }
 }

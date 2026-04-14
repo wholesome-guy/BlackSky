@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
 
 public class InputManager : MonoBehaviour
 {
@@ -9,15 +10,14 @@ public class InputManager : MonoBehaviour
 
     [Header("Joystick")]
     [SerializeField] private FloatingJoystick _floatingJoystickScript;
-    [SerializeField] private GameObject _floatingJoystick;
-    [SerializeField] private GameObject _fixedJoystick;
-    private bool _isFloatingJoystickActive = false;
 
 
     public Vector2 PitchYawRollInput { get; private set; }
     public bool aimBool {  get; private set; }
 
     public static Action OnShoot;
+
+
     private void Awake()
     {
         if(Instance != null && Instance != this)
@@ -34,9 +34,9 @@ public class InputManager : MonoBehaviour
     private void OnEnable()
     {
         _spaceshipControls.Enable();
-        _spaceshipControls.Spaceship.Shoot.performed += ShootInput;
-        _spaceshipControls.Spaceship.Aim.performed += AimInput;
-        _spaceshipControls.Spaceship.Aim.canceled += AimInput;
+        //_spaceshipControls.Spaceship.Shoot.performed += ShootInput;
+        //_spaceshipControls.Spaceship.Aim.performed += AimInput;
+        //_spaceshipControls.Spaceship.Aim.canceled += AimInput;
     }
 
    
@@ -44,9 +44,9 @@ public class InputManager : MonoBehaviour
     private void OnDisable()
     {
         _spaceshipControls.Disable();
-        _spaceshipControls.Spaceship.Shoot.performed -= ShootInput;
-        _spaceshipControls.Spaceship.Aim.performed -= AimInput;
-        _spaceshipControls.Spaceship.Aim.canceled -= AimInput;
+        //_spaceshipControls.Spaceship.Shoot.performed -= ShootInput;
+        //_spaceshipControls.Spaceship.Aim.performed -= AimInput;
+        //_spaceshipControls.Spaceship.Aim.canceled -= AimInput;
 
     }
 
@@ -70,30 +70,9 @@ public class InputManager : MonoBehaviour
         aimBool = !aimBool;
     }
    
-    public void ChangeJoystick(bool boolean)
-    {
-        _isFloatingJoystickActive = boolean;
-        if(_isFloatingJoystickActive)
-        {
-            _floatingJoystick.SetActive(true);
-            _fixedJoystick.SetActive(false);
-        }
-        else
-        {
-            _floatingJoystick.SetActive(false);
-            _fixedJoystick.SetActive(true);
-        }
-    }
     private void JoystickInput()
     {
-        if (_isFloatingJoystickActive)
-        {
-            PitchYawRollInput = _floatingJoystickScript.JoystickInput;
-        }
-        else
-        {
-            PitchYawRollInput = _spaceshipControls.Spaceship.PitchYawRoll.ReadValue<Vector2>().normalized;
-        }
+        PitchYawRollInput = _floatingJoystickScript.JoystickInput;
     }
 
 

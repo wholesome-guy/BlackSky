@@ -10,6 +10,7 @@ public class FPSManager : MonoBehaviour
     private int frames = 0; // Frames drawn over the interval
     private float timeleft; // Left time for current interval
 
+
     void Start()
     {
         timeleft = updateInterval;
@@ -42,5 +43,8 @@ public class FPSManager : MonoBehaviour
             accum = 0.0f;
             frames = 0;
         }
+
     }
+
+
 }

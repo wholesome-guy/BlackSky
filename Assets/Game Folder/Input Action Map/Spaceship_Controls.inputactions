@@ -5,48 +5,8 @@
         {
             "name": "Spaceship",
             "id": "cb4a3447-95c8-473c-a70b-2c31dec8faa4",
-            "actions": [
-                {
-                    "name": "Shoot",
-                    "type": "Button",
-                    "id": "a503b15e-abe9-4ce7-a533-2b10e3745325",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Aim",
-                    "type": "Button",
-                    "id": "f9bdf41e-a5d0-4b37-86b0-c296d937eca8",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "PitchYawRoll",
-                    "type": "Value",
-                    "id": "c0a61b9f-632a-468a-85bc-91189e0f1ef7",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "e06e5e68-b58c-46d0-a18f-ee92038f7333",
-                    "path": "<AndroidJoystick>/stick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "PitchYawRoll",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": []

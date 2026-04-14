@@ -14,5 +14,10 @@ public class RadialMenuBaking : Editor
         {
             script.BakePositions();
         }
+
+        if(GUILayout.Button("Clear Cache"))
+        {
+            script.ClearCache();
+        }
     }
 }

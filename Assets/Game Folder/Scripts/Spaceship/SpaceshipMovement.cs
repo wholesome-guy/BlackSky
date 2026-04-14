@@ -1,3 +1,4 @@
+﻿using System;
 using UnityEngine;
 
 public class SpaceshipMovement : MonoBehaviour
@@ -7,6 +8,7 @@ public class SpaceshipMovement : MonoBehaviour
     [SerializeField] private Rigidbody _spaceshipRigidbody;
     [SerializeField] private Transform _spaceshipMesh;
     [SerializeField] private Transform _cannons;
+    [SerializeField] private Transform _VFX;
 
     [Header("Physics Values")]
     [SerializeField] private float _lowThrottle;
@@ -18,6 +20,19 @@ public class SpaceshipMovement : MonoBehaviour
     [SerializeField] private float _rollClamp;
 
     private InputManager _inputManager;
+
+    public float _speed { private set; get; }
+    public static Action<int> ThrottleChange;
+    public static Action<float> SpeedAccess;
+
+    private void OnEnable()
+    {
+        ThrottleChange += SelectThrottle;
+    }
+    private void OnDisable()
+    {
+        ThrottleChange -= SelectThrottle;
+    }
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -31,23 +46,10 @@ public class SpaceshipMovement : MonoBehaviour
     {
         RotationalMovement();
         LinearMovement();
+        SpaceshipSpeed();
     }
 
-    private void SelectThrottle(int i)
-    {
-        switch(i)
-        {
-            case 0:
-                _throttle = _lowThrottle;
-                break;
-            case 1:
-                _throttle = _moderateThrottle;
-                break;
-            case 2:
-                _throttle = _highThrottle;
-                break;
-        }
-    }
+    
 
     private void LinearMovement()
     {
@@ -69,6 +71,7 @@ public class SpaceshipMovement : MonoBehaviour
         float smoothedRoll = Mathf.LerpAngle(currentEuler.z, targetRoll, 2f * Time.fixedDeltaTime);
         _spaceshipMesh.localEulerAngles = new Vector3(0f, 0f, smoothedRoll);
         _cannons.SetPositionAndRotation(_spaceshipMesh.position, _spaceshipMesh.rotation);
+        _VFX.SetPositionAndRotation(_spaceshipMesh.position, _spaceshipMesh.rotation);
     }
 
     private void Yaw()
@@ -88,5 +91,26 @@ public class SpaceshipMovement : MonoBehaviour
         
     }
 
+    private void SelectThrottle(int i)
+    {
+        switch (i)
+        {
+            case 0:
+                _throttle = _lowThrottle;
+                break;
+            case 1:
+                _throttle = _moderateThrottle;
+                break;
+            case 2:
+                _throttle = _highThrottle;
+                break;
+        }
+    }
+
+    private void SpaceshipSpeed()
+    {
+        _speed = _spaceshipRigidbody.linearVelocity.magnitude;
+        SpeedAccess?.Invoke(_speed);
+    }
 
 }
