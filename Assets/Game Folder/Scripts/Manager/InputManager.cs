@@ -16,6 +16,7 @@ public class InputManager : MonoBehaviour
     public bool aimBool {  get; private set; }
 
     public static Action OnShoot;
+    public static Action OnThrottleChange;
 
 
     private void Awake()
@@ -34,7 +35,8 @@ public class InputManager : MonoBehaviour
     private void OnEnable()
     {
         _spaceshipControls.Enable();
-        //_spaceshipControls.Spaceship.Shoot.performed += ShootInput;
+        _spaceshipControls.Spaceship.Shoot.performed += ShootInput;
+        _spaceshipControls.Spaceship.ThrottleChange.performed += ThrottleChangeInput;
         //_spaceshipControls.Spaceship.Aim.performed += AimInput;
         //_spaceshipControls.Spaceship.Aim.canceled += AimInput;
     }
@@ -44,7 +46,8 @@ public class InputManager : MonoBehaviour
     private void OnDisable()
     {
         _spaceshipControls.Disable();
-        //_spaceshipControls.Spaceship.Shoot.performed -= ShootInput;
+        _spaceshipControls.Spaceship.Shoot.performed -= ShootInput;
+        _spaceshipControls.Spaceship.ThrottleChange.performed -= ThrottleChangeInput;
         //_spaceshipControls.Spaceship.Aim.performed -= AimInput;
         //_spaceshipControls.Spaceship.Aim.canceled -= AimInput;
 
@@ -64,6 +67,10 @@ public class InputManager : MonoBehaviour
     private void ShootInput(InputAction.CallbackContext context)
     {
         OnShoot?.Invoke();
+    }
+    private void ThrottleChangeInput(InputAction.CallbackContext context)
+    {
+        OnThrottleChange?.Invoke();
     }
     private void AimInput(InputAction.CallbackContext context)
     {

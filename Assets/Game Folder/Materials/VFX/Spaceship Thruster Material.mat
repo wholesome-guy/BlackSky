@@ -125,25 +125,25 @@ Material:
     - _SrcBlend: 5
     - _SrcBlendAlpha: 1
     - _Surface: 1
-    - _ThrustPower: 0.764
+    - _ThrustPower: 0.9
     - _Time_Scale: 0.1
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZTest: 4
     - _ZWrite: 0
     - _ZWriteControl: 0
-    - _thrustPower: 0.682
+    - _thrustPower: 0.75
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Colour_1: {r: 0, g: 1, b: 0.5803922, a: 1}
-    - _Colour_2: {r: 0, g: 1, b: 0.28235295, a: 1}
+    - _Colour_1: {r: 1, g: 0, b: 0.037010193, a: 1}
+    - _Colour_2: {r: 0.5602317, g: 0, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Offset_Vector: {r: 1, g: -2, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Tilling_Vector: {r: 6, g: 0.02, b: 0, a: 0}
-    - _colour1: {r: 1, g: 0, b: 0, a: 1}
-    - _colour2: {r: 0, g: 0.174952, b: 1, a: 1}
+    - _colour1: {r: 0, g: 1, b: 0.22419739, a: 1}
+    - _colour2: {r: 0.53375554, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &2923648336271724756

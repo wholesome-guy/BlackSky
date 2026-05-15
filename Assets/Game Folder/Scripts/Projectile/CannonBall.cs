@@ -21,7 +21,7 @@ public class CannonBall : ProjectileBase
         Rigidbody = _rigidbody;
         TrailRenderer = _trailRenderer;
     }
-
+   
     private void Start()
     {
        _objectPooling = ObjectPooling.Instance;

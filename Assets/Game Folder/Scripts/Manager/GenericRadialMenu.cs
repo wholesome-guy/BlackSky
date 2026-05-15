@@ -9,7 +9,6 @@ public class GenericRadialMenu : MonoBehaviour
     [Range(0, 360)]
     [SerializeField] private float _totalUseAngle;
     [SerializeField] private float _rotateCenter;
-    [SerializeField] private float _padding;
 
 
     [SerializeField] private Vector2[] _cachedPositions;

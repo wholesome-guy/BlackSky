@@ -24,6 +24,7 @@ public class SpaceshipMovement : MonoBehaviour
     public float _speed { private set; get; }
     public static Action<int> ThrottleChange;
     public static Action<float> SpeedAccess;
+    public static Action<Transform> TransformAccess;
 
     private void OnEnable()
     {
@@ -40,6 +41,7 @@ public class SpaceshipMovement : MonoBehaviour
     {
         _inputManager = InputManager.Instance;
         _throttle = _lowThrottle;
+        TransformAccess.Invoke(transform);
     }
 
     private void FixedUpdate()
@@ -96,12 +98,15 @@ public class SpaceshipMovement : MonoBehaviour
         switch (i)
         {
             case 0:
-                _throttle = _lowThrottle;
+                _throttle = 0;
                 break;
             case 1:
-                _throttle = _moderateThrottle;
+                _throttle = _lowThrottle;
                 break;
             case 2:
+                _throttle = _moderateThrottle;
+                break;
+            case 3:
                 _throttle = _highThrottle;
                 break;
         }

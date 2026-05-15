@@ -3,195 +3,180 @@ using UnityEngine.VFX;
 
 public class SpaceshipVFX : MonoBehaviour
 {
-    [SerializeField] private VisualEffect Particles_VFX;
-    [SerializeField] private ParticleSystem Wind_Zone_VFX;
-    private ParticleSystem.MainModule Wind_Zone_Main;
-    private ParticleSystem.EmissionModule Wind_Zone_Emission;
+    [Header("Thruster")]
+    [SerializeField] private Material _thrusterMaterial;
+    [SerializeField] private Material _thrusterTrailMaterial;
+    [SerializeField] private float _lowThrottleSpeed = 8f;
+    [SerializeField] private float _moderateThrottleSpeed = 30f;
+    [SerializeField] private float _highThrottleSpeed = 80f;
+    [SerializeField] private float _lowThrustValue = 0.75f;
+    [SerializeField] private float _moderateThrustValue = 0.85f;
+    [SerializeField] private float _highThrustValue = 0.9f;
 
-    [SerializeField] private Material Thruster_Material;
-    [SerializeField] private Material Flame_Trail;
+    [Header("Wind Zone")]
+    [SerializeField] private ParticleSystem _windZone;
+    [SerializeField] private float _lowParticleSpeed = 200f;
+    [SerializeField] private float _moderateParticleSpeed = 400f;
+    [SerializeField] private float _highParticleSpeed = 600f;
+    [SerializeField] private float _lowParticleRate = 10f;
+    [SerializeField] private float _moderateParticleRate = 50f;
+    [SerializeField] private float _highParticleRate = 100f;
 
-    private float Thrust_Value;
-    [SerializeField] private float Low_Throttle_Velocity = 59f;
-    [SerializeField] private float Moderate_Throttle_Velocity = 127f;
-    [SerializeField] private float High_Throttle_Velocity = 245f;
+    [SerializeField] private VisualEffect _particles1VFX;
+    [SerializeField] private VisualEffect _particles2VFX;
 
-    private float Expected_Thrust_Value;
-    [SerializeField] private float Expected_Thrust_Value_Low = 0.75f;
-    [SerializeField] private float Expected_Thrust_Value_Moderate = 0.85f;
-    [SerializeField] private float Expected_Thrust_Value_High = 0.9f;
+    [ColorUsage(true, true)][SerializeField] private Color[] Color1 = new Color[3];
+    [ColorUsage(true, true)][SerializeField] private Color[] Color2 = new Color[3];
+    [ColorUsage(true, true)][SerializeField] private Color[] Color3 = new Color[3];
 
-    private float Expected_Particle_Speed_Value;
-    [SerializeField] private float Particle_Speed_Value_Low = 200f;
-    [SerializeField] private float Particle_Speed_Value_Moderate = 400f;
-    [SerializeField] private float Particle_Speed_Value_High = 600;
+    private struct ThrottleSettings
+    {
+        public float maxSpeed;
+        public float thrustValue;
+        public float particleSpeed;
+        public float particleRate;
+        public Color color1, color2, color3;
+        public float vfxRate;
+    }
 
-    private float Velocity_To_Particle_Speed_Constant;
-    private float Low_Velocity_To_Particle_Speed_Constant;
-    private float Moderate_Velocity_To_Particle_Speed_Constant;
-    private float High_Velocity_To_Particle_Speed_Constant;
+    private ThrottleSettings[] _throttleSettings;
 
-    private float Expected_Particle_Rate_Value;
-    [SerializeField] private float Particle_Rate_Value_Low = 10f;
-    [SerializeField] private float Particle_Rate_Value_Moderate = 50f;
-    [SerializeField] private float Particle_Rate_Value_High = 100;
+    private float _thrustValue;
+    private float _thrustExpectedValue;
+    private float _speedToThrustConstant;
+    private float _expectedParticleSpeed;
+    private float _expectedParticleRate;
+    private float _speedToParticleSpeedConstant;
+    private float _speedToParticleRateConstant;
 
-    private float Velocity_To_Particle_Rate_Constant;
-    private float Low_Velocity_To_Particle_Rate_Constant;
-    private float Moderate_Velocity_To_Particle_Rate_Constant;
-    private float High_Velocity_To_Particle_Rate_Constant;
+    private ParticleSystem.MainModule _windZoneMain;
+    private ParticleSystem.EmissionModule _windZoneEmission;
+
+    private float _spaceshipSpeed;
+    private bool _particleBool;
+    [SerializeField] private float _updateInterval = 0.5f;
+    private float _updateTimer;
+    private static readonly int _thrustPowerID = Shader.PropertyToID("_thrustPower");
+    private static readonly int _thrustColour1ID = Shader.PropertyToID("_colour1");
+    private static readonly int _thrustColour2ID = Shader.PropertyToID("_colour2");
+    private static readonly int _thrustTrailColour1ID = Shader.PropertyToID("_Colour_1");
+    private static readonly int _thrustTrailColour2ID = Shader.PropertyToID("_Colour_2");
+    private static readonly int _thursterParticleRateID = Shader.PropertyToID("Rate");
+    private static readonly int _thursterParticleColourID = Shader.PropertyToID("Colour");
 
 
-    private float Velocity_To_Thurst_Constant;
-    private float Low_Velocity_To_Thurst_Constant;
-    private float Moderate_Velocity_To_Thurst_Constant;
-    private float High_Velocity_To_Thurst_Constant;
 
-    [ColorUsage(true, true)]
-    [SerializeField] private Color[] Color1 = new Color[3];
-    [ColorUsage(true, true)]
-    [SerializeField] private Color[] Color2 = new Color[3];
-    [ColorUsage(true, true)]
-    [SerializeField] private Color[] Color3 = new Color[3];
+    private void OnEnable()
+    {
+        SpaceshipMovement.SpeedAccess += SpaceshipSpeed;
+        SpaceshipMovement.ThrottleChange += SelectThrottle;
+    }
 
-    private float Particle_Rate;
-
-    public bool Particle_Switch = false;
-
-    private float Player_Velocity;
-
+    private void OnDisable()
+    {
+        SpaceshipMovement.SpeedAccess -= SpaceshipSpeed;
+        SpaceshipMovement.ThrottleChange -= SelectThrottle;
+    }
 
     private void Start()
     {
+        _throttleSettings = new ThrottleSettings[]
+        {
+            new() { maxSpeed = _lowThrottleSpeed,      thrustValue = _lowThrustValue,
+                    particleSpeed = _lowParticleSpeed,  particleRate = _lowParticleRate,
+                    color1 = Color1[0], color2 = Color2[0], color3 = Color3[0], vfxRate = 5f },
 
-        Low_Velocity_To_Thurst_Constant = Expected_Thrust_Value_Low / Low_Throttle_Velocity;
-        Moderate_Velocity_To_Thurst_Constant = Expected_Thrust_Value_Moderate / Moderate_Throttle_Velocity;
-        High_Velocity_To_Thurst_Constant = Expected_Thrust_Value_High / High_Throttle_Velocity;
+            new() { maxSpeed = _moderateThrottleSpeed,  thrustValue = _moderateThrustValue,
+                    particleSpeed = _moderateParticleSpeed, particleRate = _moderateParticleRate,
+                    color1 = Color1[1], color2 = Color2[1], color3 = Color3[1], vfxRate = 10f },
 
-        Low_Velocity_To_Particle_Speed_Constant = Particle_Speed_Value_Low / Low_Throttle_Velocity;
-        Moderate_Velocity_To_Particle_Speed_Constant = Particle_Speed_Value_Moderate / Moderate_Throttle_Velocity;
-        High_Velocity_To_Particle_Speed_Constant = Particle_Speed_Value_High / High_Throttle_Velocity;
+            new() { maxSpeed = _highThrottleSpeed,      thrustValue = _highThrustValue,
+                    particleSpeed = _highParticleSpeed,  particleRate = _highParticleRate,
+                    color1 = Color1[2], color2 = Color2[2], color3 = Color3[2], vfxRate = 15f },
+        };
 
-        Low_Velocity_To_Particle_Rate_Constant = Particle_Rate_Value_Low / Low_Throttle_Velocity;
-        Moderate_Velocity_To_Particle_Rate_Constant = Particle_Rate_Value_Moderate / Moderate_Throttle_Velocity;
-        High_Velocity_To_Particle_Rate_Constant = Particle_Rate_Value_High / High_Throttle_Velocity;
+        _windZoneMain = _windZone.main;
+        _windZoneEmission = _windZone.emission;
+        _updateTimer = 0;
 
-
-        Wind_Zone_Main = Wind_Zone_VFX.main;
-        Wind_Zone_Emission = Wind_Zone_VFX.emission;
-
-        Low_Throttle();
+        ApplyThrottle(0);
     }
 
     private void Update()
     {
-        Thrust_Value = Mathf.Clamp(Player_Velocity * Velocity_To_Thurst_Constant, 0, Expected_Thrust_Value);
-
-        Thruster_Material.SetFloat("_ThrustPower", Thrust_Value);
-
-        float Particle_Speed = Mathf.Clamp(Player_Velocity * Velocity_To_Particle_Speed_Constant, 0, Expected_Particle_Speed_Value);
-        Wind_Zone_Main.startSpeed = Particle_Speed;
-
-        float Particle_Rate = Mathf.Clamp(Player_Velocity * Velocity_To_Particle_Rate_Constant, 0, Expected_Particle_Rate_Value);
-        Wind_Zone_Emission.rateOverTime = Particle_Rate;
-
-
-        bool isMoving = Player_Velocity > 0.01f;
-
-        if (isMoving && !Particle_Switch)
+        _updateTimer += Time.deltaTime;
+        if( _updateTimer > _updateInterval)
         {
-            Particles_Play();
-            Particle_Switch = true;
+            TimedUpdate();
+            _updateTimer = 0;
         }
-        else if (!isMoving && Particle_Switch)
+    }
+    private void TimedUpdate()
+    {
+        _thrustValue = Mathf.Clamp(_spaceshipSpeed * _speedToThrustConstant, 0f, _thrustExpectedValue);
+        _thrusterMaterial.SetFloat(_thrustPowerID, _thrustValue);
+
+        _windZoneMain.startSpeed = Mathf.Clamp(_spaceshipSpeed * _speedToParticleSpeedConstant, 0f, _expectedParticleSpeed);
+        _windZoneEmission.rateOverTime = Mathf.Clamp(_spaceshipSpeed * _speedToParticleRateConstant, 0f, _expectedParticleRate);
+
+        bool isMoving = _spaceshipSpeed > 0.01f;
+        if (isMoving && !_particleBool)
         {
-            Particles_Stop();
-            Particle_Switch = false;
+            ParticlesPlay();
+            _particleBool = true;
         }
-
-
+        else if (!isMoving && _particleBool)
+        {
+            ParticlesStop();
+            _particleBool = false;
+        }
     }
 
-    private void Particles_Play()
+
+    private void SpaceshipSpeed(float speed)
+    { 
+        _spaceshipSpeed = speed; 
+    } 
+
+    private void ParticlesPlay()
     {
-        Particles_VFX.Play();
-        Wind_Zone_VFX.Play();
+        _particles1VFX.Play();
+        _particles2VFX.Play();
+        _windZone.Play();
     }
-    private void Particles_Stop()
-    {
-        Particles_VFX.Stop();
-        Wind_Zone_VFX.Stop();
 
+    private void ParticlesStop()
+    {
+        _particles1VFX.Stop();
+        _particles2VFX.Stop();
+        _windZone.Stop();
     }
-    public void Low_Throttle()
+
+    private void SelectThrottle(int i)
     {
-
-
-        Velocity_To_Thurst_Constant = Low_Velocity_To_Thurst_Constant;
-        Expected_Thrust_Value = Expected_Thrust_Value_Low;
-        Particle_Rate = 5;
-        Velocity_To_Particle_Speed_Constant = Low_Velocity_To_Particle_Speed_Constant;
-        Velocity_To_Particle_Rate_Constant = Low_Velocity_To_Particle_Rate_Constant;
-        Expected_Particle_Speed_Value = Particle_Speed_Value_Low;
-        Expected_Particle_Rate_Value = Particle_Rate_Value_Low;
-
-
-        Thruster_Material.SetColor("_Colour_1", Color1[0]);
-        Thruster_Material.SetColor("_Colour_2", Color2[0]);
-
-        Flame_Trail.SetColor("_Colour_1", Color1[0]);
-        Flame_Trail.SetColor("_Colour_2", Color2[0]);
-
-
-        Particles_VFX.SetFloat("Rate", Particle_Rate);
-        Particles_VFX.SetVector4("Colour", Color3[0]);
-
+        if (i == 0) { ParticlesStop(); return; }
+        ApplyThrottle(Mathf.Clamp(i - 1, 0, _throttleSettings.Length - 1));
     }
-    public void Moderate_Throttle()
+
+    private void ApplyThrottle(int index)
     {
-        Velocity_To_Thurst_Constant = Moderate_Velocity_To_Thurst_Constant;
-        Expected_Thrust_Value = Expected_Thrust_Value_Moderate;
-        Particle_Rate = 10;
-        Velocity_To_Particle_Speed_Constant = Moderate_Velocity_To_Particle_Speed_Constant;
-        Velocity_To_Particle_Rate_Constant = Moderate_Velocity_To_Particle_Rate_Constant;
-        Expected_Particle_Speed_Value = Particle_Speed_Value_Moderate;
-        Expected_Particle_Rate_Value = Particle_Rate_Value_Moderate;
+        var s = _throttleSettings[index];
 
+        _speedToThrustConstant = s.thrustValue / s.maxSpeed;
+        _thrustExpectedValue = s.thrustValue;
+        _speedToParticleSpeedConstant = s.particleSpeed / s.maxSpeed;
+        _speedToParticleRateConstant = s.particleRate / s.maxSpeed;
+        _expectedParticleSpeed = s.particleSpeed;
+        _expectedParticleRate = s.particleRate;
 
+        _thrusterMaterial.SetColor(_thrustColour1ID, s.color1);
+        _thrusterMaterial.SetColor(_thrustColour2ID, s.color2);
+        _thrusterTrailMaterial.SetColor(_thrustTrailColour1ID, s.color1);
+        _thrusterTrailMaterial.SetColor(_thrustTrailColour2ID, s.color2);
 
-        Thruster_Material.SetColor("_Colour_1", Color1[1]);
-        Thruster_Material.SetColor("_Colour_2", Color2[1]);
-
-        Flame_Trail.SetColor("_Colour_1", Color1[1]);
-        Flame_Trail.SetColor("_Colour_2", Color2[1]);
-
-        Particles_VFX.SetFloat("Rate", Particle_Rate);
-        Particles_VFX.SetVector4("Colour", Color3[1]);
-
-
-    }
-    public void High_Throttle()
-    {
-        Velocity_To_Thurst_Constant = High_Velocity_To_Thurst_Constant;
-        Expected_Thrust_Value = Expected_Thrust_Value_High;
-        Particle_Rate = 15;
-        Velocity_To_Particle_Speed_Constant = High_Velocity_To_Particle_Speed_Constant;
-        Velocity_To_Particle_Rate_Constant = High_Velocity_To_Particle_Rate_Constant;
-        Expected_Particle_Speed_Value = Particle_Speed_Value_High;
-        Expected_Particle_Rate_Value = Particle_Rate_Value_High;
-
-
-
-        Thruster_Material.SetColor("_Colour_1", Color1[2]);
-        Thruster_Material.SetColor("_Colour_2", Color2[2]);
-
-
-        Flame_Trail.SetColor("_Colour_1", Color1[2]);
-        Flame_Trail.SetColor("_Colour_2", Color2[2]);
-
-        Particles_VFX.SetFloat("Rate", Particle_Rate);
-        Particles_VFX.SetVector4("Colour", Color3[2]);
-
-
+        _particles1VFX.SetFloat(_thursterParticleRateID, s.vfxRate);
+        _particles1VFX.SetVector4(_thursterParticleColourID, s.color3);
+        _particles2VFX.SetFloat(_thursterParticleRateID, s.vfxRate);
+        _particles2VFX.SetVector4(_thursterParticleColourID, s.color3);
     }
 }

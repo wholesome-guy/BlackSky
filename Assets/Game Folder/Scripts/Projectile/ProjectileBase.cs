@@ -10,6 +10,7 @@ public abstract class ProjectileBase: MonoBehaviour
     protected float PostHitTime;
     protected Rigidbody Rigidbody;
     protected TrailRenderer TrailRenderer;
+    public Vector3 TrackingPoint;
 
     protected virtual void OnEnable()
     {

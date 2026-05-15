@@ -5,8 +5,50 @@
         {
             "name": "Spaceship",
             "id": "cb4a3447-95c8-473c-a70b-2c31dec8faa4",
-            "actions": [],
-            "bindings": []
+            "actions": [
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "22860e27-81f8-4120-8e1a-7e43dad9ff85",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ThrottleChange",
+                    "type": "Button",
+                    "id": "b91fc29e-0355-4b90-9136-4fb462cac4f0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "185b9275-a8ef-4fee-970c-9690ae65442e",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "95755a50-e12f-4ae3-bc75-6db1c690766f",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThrottleChange",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

@@ -4,6 +4,7 @@ using UnityEngine;
 public class SpeedIndicator : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _speedText;
+    [SerializeField] private float _speedMultiplier = 19;
 
     private void OnEnable()
     {
@@ -16,7 +17,8 @@ public class SpeedIndicator : MonoBehaviour
 
     private void SpeedUpdating(float speed)
     {
-        _speedText.text = speed.ToString("F0") + "m/s";
+        float multipliedSpeed = _speedMultiplier * speed;
+        _speedText.text = multipliedSpeed.ToString("F0") + "m/s";
     }
 
 }
