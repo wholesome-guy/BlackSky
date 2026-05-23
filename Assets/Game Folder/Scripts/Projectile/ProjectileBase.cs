@@ -59,6 +59,7 @@ public abstract class ProjectileBase: MonoBehaviour
     {
         if (_homingEnabled)
         {
+            if (_targetObject == null) return;
             TrajectoryMovement(transform.position, _targetObject.position);
         }
         else
@@ -69,6 +70,7 @@ public abstract class ProjectileBase: MonoBehaviour
     }
     private void TrajectoryMovement(Vector3 startPosition, Vector3 endPosition)
     {
+        
         float distance = Vector3.Distance(startPosition, endPosition);
         _travelTime = distance / HomingThrust;
         _maxTrajectoryArc = distance * _trajectoryArcRatio;

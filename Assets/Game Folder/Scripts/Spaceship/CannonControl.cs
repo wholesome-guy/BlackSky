@@ -21,6 +21,7 @@ public class CannonControl : MonoBehaviour
 
     [SerializeField] private float _reloadDuration = 5f; 
     [SerializeField] private float _maxShootDistance = 100;
+    [SerializeField] private float _maxAimAssistDistance = 500;
     [SerializeField] private float _aimAssistRadius = 10;
     [SerializeField] private float _aimAssistDisableDistance = 100;
     [SerializeField] private Transform[] _cannons;
@@ -67,7 +68,7 @@ public class CannonControl : MonoBehaviour
     private void SpherecastAimAssist(Ray inputRay)
     {
         RaycastHit sphereHit;
-        if (Physics.SphereCast(inputRay, _aimAssistRadius, out sphereHit, _maxShootDistance, _trackableLayer))
+        if (Physics.SphereCast(inputRay, _aimAssistRadius, out sphereHit, _maxAimAssistDistance, _trackableLayer))
         {
             _trackingObject = sphereHit.collider.transform;
             _aimAssist = true;
@@ -75,18 +76,20 @@ public class CannonControl : MonoBehaviour
 
         if (_aimAssist)
         {
+            if (!_trackingObject) return;
             Vector3 trackingObjectScreenPosition = Camera.main.WorldToScreenPoint(_trackingObject.position);
             float distanceTrackerCrosshair = Vector3.Distance(trackingObjectScreenPosition, _crosshairPosition);
-
-            Debug.Log(distanceTrackerCrosshair);
             Tracker.position = trackingObjectScreenPosition;
 
             if (distanceTrackerCrosshair > _aimAssistDisableDistance)
             {
                 _aimAssist = false;
-                Tracker.position = _crosshairPosition;
                 _trackingObject = null;
             }
+        }
+        else
+        {
+            Tracker.position = _crosshairPosition;
         }
 
     }

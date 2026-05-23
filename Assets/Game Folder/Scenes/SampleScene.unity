@@ -2349,6 +2349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CannonControl
   _reloadDuration: 1
   _maxShootDistance: 1000
+  _maxAimAssistDistance: 500
   _aimAssistRadius: 10
   _aimAssistDisableDistance: 300
   _cannons:
