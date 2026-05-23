@@ -74,9 +74,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdc9986413e1efd46845f7e537adbf09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CannonBall
-  TrackingPoint: {x: 0, y: 0, z: 0}
-  _thrustForce: 100
-  _torqueForce: 100
+  _trajectoryCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 17.92044
+      outSlope: 17.92044
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.06333016
+      value: 2.1349044
+      inSlope: 15.147127
+      outSlope: 15.147127
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.45808095
+      value: 7.0194764
+      inSlope: -3.5893836
+      outSlope: -3.5893836
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.7685547
+      value: 0.9489136
+      inSlope: -19.55258
+      outSlope: -19.55258
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _trajectoryArcRatio: 0.05
+  _homingThrust: 10
+  _forwardThrust: 1000
+  _torqueForce: 10
   _destroyTime: 5
   _postHitDestroyTime: 0.05
   _explosionDestroyTime: 5

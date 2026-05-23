@@ -3,7 +3,8 @@ using System.Collections;
 
 public class CannonBall : ProjectileBase
 {
-    [SerializeField] private float _thrustForce = 1000;
+    [SerializeField] private float _homingThrust = 1000;
+    [SerializeField] private float _forwardThrust = 10;
     [SerializeField] private float _torqueForce = 1000;
     [SerializeField] private float _destroyTime = 2f;
     [SerializeField] private float _postHitDestroyTime = 0.05f;
@@ -14,7 +15,8 @@ public class CannonBall : ProjectileBase
     private ObjectPooling _objectPooling;
     private void Awake()
     {
-        Thrust = _thrustForce;
+        HomingThrust = _homingThrust;
+        ForwardThrust = _forwardThrust;
         Torque = _torqueForce;
         DestroyTime = _destroyTime;
         PostHitTime = _postHitDestroyTime;

@@ -21,15 +21,20 @@ public class CannonControl : MonoBehaviour
 
     [SerializeField] private float _reloadDuration = 5f; 
     [SerializeField] private float _maxShootDistance = 100;
+    [SerializeField] private float _aimAssistRadius = 10;
+    [SerializeField] private float _aimAssistDisableDistance = 100;
     [SerializeField] private Transform[] _cannons;
 
     [SerializeField] private LayerMask _trackableLayer;
-    [SerializeField] private Vector3 _trackingPoint;
+    [SerializeField] private Transform _trackingObject;
+    private bool _aimAssist = false;
 
     private Vector2 _crosshairPosition;
     private bool _canShoot = true;
     private WaitForSeconds _waitReloadduration;
     private ObjectPooling _objectPooling;
+
+    [SerializeField] private Transform Tracker;
 
 
     private void Start()
@@ -38,27 +43,55 @@ public class CannonControl : MonoBehaviour
     }
     private void Update()
     {
-        RayToCrosshair();
+        Ray CrosshairRay = Camera.main.ScreenPointToRay(_crosshairPosition);
+        RaycastCannonMovement(CrosshairRay);
+        SpherecastAimAssist(CrosshairRay);
     }
-    private void RayToCrosshair()
+    private void RaycastCannonMovement(Ray inputRay)
     {
         Vector3 targetPosition;
         RaycastHit hit;
 
-        Ray inputRay = Camera.main.ScreenPointToRay(_crosshairPosition);
-
-        if (Physics.Raycast(inputRay, out hit,_maxShootDistance,_trackableLayer))
+        if (Physics.Raycast(inputRay, out hit,_maxShootDistance))
         {
             targetPosition = hit.point;
-            _trackingPoint = hit.point;
         }
         else
         {
             targetPosition = inputRay.origin + inputRay.direction * _maxShootDistance;
         }
-        RotateToInput(targetPosition);
+
+        
+            RotateCannons(targetPosition);
     }
-    private void RotateToInput(Vector3 target)
+    private void SpherecastAimAssist(Ray inputRay)
+    {
+        RaycastHit sphereHit;
+        if (Physics.SphereCast(inputRay, _aimAssistRadius, out sphereHit, _maxShootDistance, _trackableLayer))
+        {
+            _trackingObject = sphereHit.collider.transform;
+            _aimAssist = true;
+        }
+
+        if (_aimAssist)
+        {
+            Vector3 trackingObjectScreenPosition = Camera.main.WorldToScreenPoint(_trackingObject.position);
+            float distanceTrackerCrosshair = Vector3.Distance(trackingObjectScreenPosition, _crosshairPosition);
+
+            Debug.Log(distanceTrackerCrosshair);
+            Tracker.position = trackingObjectScreenPosition;
+
+            if (distanceTrackerCrosshair > _aimAssistDisableDistance)
+            {
+                _aimAssist = false;
+                Tracker.position = _crosshairPosition;
+                _trackingObject = null;
+            }
+        }
+
+    }
+
+    private void RotateCannons(Vector3 target)
     {
         for (int i = 0; i < _cannons.Length; i++)
         {
@@ -81,7 +114,7 @@ public class CannonControl : MonoBehaviour
         for(int i = 0; i< _cannons.Length; i++)
         {
             GameObject obj = _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
-            obj.GetComponent<ProjectileBase>().TrackingPoint = _trackingPoint;
+            obj.GetComponent<ProjectileBase>().InitialiseDirectionOfProjectile(_trackingObject, _aimAssist);
         }
 
         _canShoot = false;

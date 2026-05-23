@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
+    [SerializeField] private GameObject prefab;
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Projectile"))
         {
-            transform.position = RandomPosition(transform.position);
+            Instantiate(prefab,RandomPosition(transform.position),Quaternion.identity);
+            Destroy(gameObject,0.5f);
         }
     }
     private Vector3 RandomPosition(Vector3 position)
@@ -20,5 +22,10 @@ public class Test : MonoBehaviour
 
         return randomPosition;
 
+    }
+
+    private void Update()
+    {
+        transform.Translate(0.1f, 0.1f, 0.1f);
     }
 }
