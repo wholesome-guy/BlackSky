@@ -5,6 +5,8 @@ using UnityEngine;
 public class MaterialChangeVFX : MonoBehaviour
 {
     public static Action<MeshRenderer[], Material, int, float> MaterialFlashEvent;
+
+    private Material[] _originalMaterials = new Material[8];
     private void OnEnable()
     {
         MaterialFlashEvent += MaterialFlash;
@@ -15,35 +17,49 @@ public class MaterialChangeVFX : MonoBehaviour
     }
     private void MaterialFlash(MeshRenderer[] meshRenderers, Material change, int iterations, float duration)
     {
-        Material[] originalMaterials =  new Material[meshRenderers.Length];
-        for(int i = 0; i < meshRenderers.Length; i++)
-        {
-            originalMaterials[i] = meshRenderers[i].sharedMaterial;
-        }
-        StartCoroutine(MaterialChangeRoutine(meshRenderers, originalMaterials, change, iterations, duration));
+        if (meshRenderers.Length > _originalMaterials.Length)
+            _originalMaterials = new Material[meshRenderers.Length];
+
+        for (int i = 0; i < meshRenderers.Length; i++)
+            _originalMaterials[i] = meshRenderers[i].sharedMaterial;
+
+        StartCoroutine(MaterialChangeRoutine(meshRenderers, change, iterations, duration));
     }
-    private IEnumerator MaterialChangeRoutine(MeshRenderer[] meshRenderers, Material[] originalMaterials, Material change, int iterations, float duration)
+    private IEnumerator MaterialChangeRoutine(MeshRenderer[] meshRenderers,Material change, int iterations, float duration)
     {
+
+        int count = meshRenderers.Length;
 
         for (int i = 0; i < iterations; i++)
         {
-            for (int k = 0; k < meshRenderers.Length; k++)
+            for (int k = 0; k < count; k++)
             {
-                meshRenderers[k].sharedMaterial = originalMaterials[k];
                 meshRenderers[k].sharedMaterial = change;
             }
 
-            yield return new WaitForSeconds(duration);
-
-            for (int k = 0; k < meshRenderers.Length; k++)
+            float timer = 0f;
+            while (timer < duration) 
             {
-                meshRenderers[k].sharedMaterial = originalMaterials[k];
+                timer += Time.deltaTime; 
+                yield return null; 
             }
 
-            yield return new WaitForSeconds(duration);
+            for (int k = 0; k < count; k++)
+            {
+                meshRenderers[k].sharedMaterial = _originalMaterials[k];
+            }
+
+            timer = 0f;
+            while (timer < duration)
+            {
+                timer += Time.deltaTime;
+                yield return null;
+            }
 
             duration = Mathf.Max(0.05f, duration * 0.9f);
         }
 
     }
+
 }
+

@@ -2,12 +2,17 @@ using UnityEngine;
 
 public class GenericRadialMenu : MonoBehaviour
 {
-
+    [Header("Radial Menu Center Buttons")]
     [SerializeField] private RectTransform _center;
+
+    [Header("Radial Menu Options Buttons")]
     [SerializeField] private RectTransform[] _options;
+
+    [Header("Radial Menu Controls")]
     [SerializeField] private float _radius;
     [Range(0, 360)]
     [SerializeField] private float _totalUseAngle;
+    [Range(0, 360)]
     [SerializeField] private float _rotateCenter;
 
 
@@ -26,7 +31,7 @@ public class GenericRadialMenu : MonoBehaviour
         }
 
 #if UNITY_EDITOR
-        UnityEditor.EditorUtility.SetDirty(this); // Marks scene dirty so it saves
+        UnityEditor.EditorUtility.SetDirty(this);
 #endif
     }
 
@@ -41,7 +46,7 @@ public class GenericRadialMenu : MonoBehaviour
 
 
 #if UNITY_EDITOR
-        UnityEditor.EditorUtility.SetDirty(this); // Marks scene dirty so it saves
+        UnityEditor.EditorUtility.SetDirty(this);
 #endif
     }
 }

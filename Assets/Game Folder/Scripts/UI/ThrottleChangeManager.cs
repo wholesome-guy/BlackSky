@@ -38,6 +38,11 @@ public class ThrottleChangeManager : MonoBehaviour
     [SerializeField] private Ease _scaleEase = Ease.InOutBack;
     [SerializeField] private Ease _fillEase = Ease.InOutCubic;
 
+    private Color _inactiveColor;
+    private Color _activeColor;
+
+    private Tween _arcTween;
+
     private bool isThrottleRadialActive = false;
 
     private void OnEnable()
@@ -50,12 +55,22 @@ public class ThrottleChangeManager : MonoBehaviour
         InputManager.OnThrottleChange -= OnThrottleChangePressed;
     }
 
+    private void Awake()
+    {
+        _inactiveColor = new Color(1f, 1f, 1f, _inactiveAlpha);
+        _activeColor = new Color(1f, 1f, 1f, _activeAlpha);
+        _maxThrottleIndex = _optionSelectArc.Length;
+    }
+
     public void OnThrottleChangePressed()
     {
         if (isThrottleRadialActive)
             return;
 
-        _throttleImage.color = new Color(1f, 1f, 1f, _inactiveAlpha);
+        isThrottleRadialActive = true;
+        _throttleImage.color = _inactiveColor;
+
+        transform.DOKill();
 
         transform
             .DOScale(_expandedScale, _scaleAnimationDuration)
@@ -67,14 +82,17 @@ public class ThrottleChangeManager : MonoBehaviour
                 _throttleRadialMenu.transform.localScale = Vector3.zero;
                 _throttleRadialMenu.SetActive(true);
 
+                _throttleRadialMenu.transform.DOKill();
                 _throttleRadialMenu.transform
                     .DOScale(_normalScale, _scaleAnimationDuration)
                     .SetEase(_scaleEase);
 
-                for (int i = 0; i < _otherUIGameobjects.Length; i++)
+                int countOtherObjects = _otherUIGameobjects.Length;
+                for (int i = 0; i < countOtherObjects; i++)
                 {
                     int index = i;
 
+                    _otherUIGameobjects[index].transform.DOKill();
                     _otherUIGameobjects[index].transform
                         .DOScale(_hideScale, _scaleAnimationDuration)
                         .SetEase(_scaleEase)
@@ -84,15 +102,14 @@ public class ThrottleChangeManager : MonoBehaviour
                         });
                 }
 
-                UIEffects.SlowMotionEffectEvent.Invoke(true);
+                UIEffects.SlowMotionEffectEvent?.Invoke(true);
             });
 
-        isThrottleRadialActive = true;
     }
 
     public void SelectThrottle(int index)
     {
-        if (index > _maxThrottleIndex)
+        if (index > _maxThrottleIndex|| index < 0)
             return;
 
         SpaceshipMovement.ThrottleChange?.Invoke(index);
@@ -107,10 +124,12 @@ public class ThrottleChangeManager : MonoBehaviour
             value => _optionSelectArc[index].fillAmount = value)
             .SetEase(_fillEase);
 
+        transform.DOKill();
         transform
             .DOScale(_selectedScale, _scaleAnimationDuration)
             .SetEase(_scaleEase);
 
+        _throttleRadialMenu.transform.DOKill();
         _throttleRadialMenu.transform
             .DOScale(_hideScale, _scaleAnimationDuration)
             .SetEase(_scaleEase)
@@ -119,7 +138,7 @@ public class ThrottleChangeManager : MonoBehaviour
                 AnimateThrottleArc(_emptyFillAmount, _fullFillAmount);
 
                 _throttleImage.sprite = _throttleIcons[index];
-                _throttleImage.color = new Color(1f, 1f, 1f, _activeAlpha);
+                _throttleImage.color = _activeColor;
 
                 _throttleRadialMenu.SetActive(false);
                 _optionSelectArc[index].gameObject.SetActive(false);
@@ -128,12 +147,13 @@ public class ThrottleChangeManager : MonoBehaviour
                 {
                     _otherUIGameobjects[i].SetActive(true);
 
+                    _otherUIGameobjects[i].transform.DOKill();
                     _otherUIGameobjects[i].transform
                         .DOScale(_normalScale, _scaleAnimationDuration)
                         .SetEase(_scaleEase);
                 }
 
-                UIEffects.SlowMotionEffectEvent.Invoke(false);
+                UIEffects.SlowMotionEffectEvent?.Invoke(false);
             });
 
         isThrottleRadialActive = false;
@@ -141,9 +161,9 @@ public class ThrottleChangeManager : MonoBehaviour
 
     private void AnimateThrottleArc(float from, float to)
     {
-        DOVirtual.Float(
-            from,
-            to,
+        _arcTween?.Kill();
+        _arcTween = DOVirtual.Float(
+            from, to,
             _fillAnimationDuration,
             value => _throttleArc.fillAmount = value)
             .SetEase(_fillEase);

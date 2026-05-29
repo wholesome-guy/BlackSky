@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using System.Runtime.CompilerServices;
 
 public class CannonControl : MonoBehaviour
 {
@@ -16,23 +15,31 @@ public class CannonControl : MonoBehaviour
     }
     private void Awake()
     {
-        _waitReloadduration = new WaitForSeconds(_reloadDuration);
+        _waitReloadDuration = new WaitForSeconds(_reloadDuration);
     }
 
-    [SerializeField] private float _reloadDuration = 5f; 
-    [SerializeField] private float _maxShootDistance = 100;
-    [SerializeField] private float _maxAimAssistDistance = 500;
-    [SerializeField] private float _aimAssistRadius = 10;
-    [SerializeField] private float _aimAssistDisableDistance = 100;
-    [SerializeField] private Transform[] _cannons;
+    [Header("Reload Time")]
+    [SerializeField] private float _reloadDuration = 5f;
 
+
+    [Header("Shoot Distances")]
+    [SerializeField] private float _maxShootDistance = 100f;
+    [SerializeField] private float _maxAimAssistDistance = 500f;
+
+    [Header("Aim Assist Controls")]
+    [SerializeField] private float _aimAssistRadius = 10f;
+    [SerializeField] private float _aimAssistDisableDistance = 100f; 
     [SerializeField] private LayerMask _trackableLayer;
-    [SerializeField] private Transform _trackingObject;
+    private Transform _trackingObject;
     private bool _aimAssist = false;
+
+    [Header("Cannons")]
+    [SerializeField] private Transform[] _cannons;
 
     private Vector2 _crosshairPosition;
     private bool _canShoot = true;
-    private WaitForSeconds _waitReloadduration;
+    private Camera _mainCamera;
+    private WaitForSeconds _waitReloadDuration;
     private ObjectPooling _objectPooling;
 
     [SerializeField] private Transform Tracker;
@@ -41,12 +48,13 @@ public class CannonControl : MonoBehaviour
     private void Start()
     {
         _objectPooling = ObjectPooling.Instance;
+        _mainCamera = Camera.main;
     }
     private void Update()
     {
-        Ray CrosshairRay = Camera.main.ScreenPointToRay(_crosshairPosition);
-        RaycastCannonMovement(CrosshairRay);
-        SpherecastAimAssist(CrosshairRay);
+        Ray crosshairRay = _mainCamera.ScreenPointToRay(_crosshairPosition);
+        RaycastCannonMovement(crosshairRay);
+        SpherecastAimAssist(crosshairRay);
     }
     private void RaycastCannonMovement(Ray inputRay)
     {
@@ -62,9 +70,12 @@ public class CannonControl : MonoBehaviour
             targetPosition = inputRay.origin + inputRay.direction * _maxShootDistance;
         }
 
-        
-            RotateCannons(targetPosition);
+        //Rotates the cannons to point at the crosshair
+
+        RotateCannons(targetPosition);
     }
+
+    //aim assist
     private void SpherecastAimAssist(Ray inputRay)
     {
         RaycastHit sphereHit;
@@ -77,7 +88,8 @@ public class CannonControl : MonoBehaviour
         if (_aimAssist)
         {
             if (!_trackingObject) return;
-            Vector3 trackingObjectScreenPosition = Camera.main.WorldToScreenPoint(_trackingObject.position);
+
+            Vector3 trackingObjectScreenPosition = _mainCamera.WorldToScreenPoint(_trackingObject.position);
             float distanceTrackerCrosshair = Vector3.Distance(trackingObjectScreenPosition, _crosshairPosition);
             Tracker.position = trackingObjectScreenPosition;
 
@@ -96,11 +108,10 @@ public class CannonControl : MonoBehaviour
 
     private void RotateCannons(Vector3 target)
     {
-        for (int i = 0; i < _cannons.Length; i++)
+        int count = _cannons.Length;
+        for (int i = 0; i < count; i++)
         {
             Vector3 direction = target - _cannons[i].position;
-
-            _cannons[i].forward = direction;
 
             _cannons[i].rotation = Quaternion.LookRotation(direction);
         }
@@ -114,10 +125,11 @@ public class CannonControl : MonoBehaviour
     private void ShootProjectile()
     {
         if (!_canShoot) return;
-        for(int i = 0; i< _cannons.Length; i++)
+        int count = _cannons.Length;
+        for(int i = 0; i < count; i++)
         {
-            GameObject obj = _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
-            obj.GetComponent<ProjectileBase>().InitialiseDirectionOfProjectile(_trackingObject, _aimAssist);
+            var (obj, projectile) = _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
+            projectile.InitialiseDirectionOfProjectile(_trackingObject, _aimAssist);
         }
 
         _canShoot = false;
@@ -127,8 +139,8 @@ public class CannonControl : MonoBehaviour
 
     private IEnumerator ReloadProjectile()
     {
-        ShootButton.ReloadUIEffect.Invoke(_reloadDuration);
-        yield return _waitReloadduration;
+        ShootButton.ReloadUIEffect?.Invoke(_reloadDuration);
+        yield return _waitReloadDuration;
         _canShoot = true;
     }
     

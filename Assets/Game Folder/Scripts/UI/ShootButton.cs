@@ -2,7 +2,6 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using System;
-using UnityEditor.ShaderGraph.Internal;
 
 public class ShootButton : MonoBehaviour
 {
@@ -16,8 +15,16 @@ public class ShootButton : MonoBehaviour
     [SerializeField] private float _inactiveScale = 0.5f;
     [SerializeField] private float _activeScale = 1;
 
-    public static Action<float> ReloadUIEffect;
+    private Color _inactiveColor;
+    private Color _activeColor;
+    private Sequence _reloadSequence;
 
+    public static Action<float> ReloadUIEffect;
+    private void Awake()
+    {
+        _inactiveColor = new Color(1f, 1f, 1f, _inactiveAlpha);
+        _activeColor = new Color(1f, 1f, 1f, _activeAlpha);
+    }
     private void OnEnable()
     {
         ReloadUIEffect += ReloadEffect;
@@ -29,14 +36,17 @@ public class ShootButton : MonoBehaviour
 
     private void ReloadEffect(float duration)
     {
-        _shootIcon.color = new Color(1, 1, 1, _inactiveAlpha);
+        _reloadSequence?.Kill();
+        _shootIcon.color = _inactiveColor;
 
-        Sequence sequence = DOTween.Sequence();
-        sequence.Append(DOVirtual.Float(1, 0, _bufferTime, (f) => { _shootArc.fillAmount = f; }).SetEase(Ease.InOutCubic));
-        sequence.Join(transform.DOScale(_inactiveScale, _bufferTime).SetEase(Ease.InOutCubic));
-        sequence.Append(DOVirtual.Float(0, 1, duration - _bufferTime, (a) => { _shootArc.fillAmount = a; }).SetEase(Ease.InOutCubic));
-        sequence.Join(transform.DOScale(_activeScale, duration - _bufferTime).SetEase(Ease.InOutCubic));
-        sequence.OnComplete(() => {_shootIcon.color = new Color(1,1,1,_activeAlpha); });
+        float fillDuration = duration - _bufferTime;
+
+        _reloadSequence = DOTween.Sequence();
+        _reloadSequence.Append(DOVirtual.Float(1f, 0f, _bufferTime, (f) => { _shootArc.fillAmount = f; }).SetEase(Ease.InOutCubic));
+        _reloadSequence.Join(transform.DOScale(_inactiveScale, _bufferTime).SetEase(Ease.InOutCubic));
+        _reloadSequence.Append(DOVirtual.Float(0f, 1f, fillDuration, (a) => { _shootArc.fillAmount = a; }).SetEase(Ease.InOutCubic));
+        _reloadSequence.Join(transform.DOScale(_activeScale, fillDuration).SetEase(Ease.InOutCubic));
+        _reloadSequence.OnComplete(() => {_shootIcon.color = _activeColor; });
         
     }
 }

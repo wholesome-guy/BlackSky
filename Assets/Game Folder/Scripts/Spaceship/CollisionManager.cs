@@ -7,6 +7,6 @@ public class CollisionManager : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        MaterialChangeVFX.MaterialFlashEvent.Invoke(_spaceshipMeshRenderers,_damageMaterial, 1, 0.25f);
+        MaterialChangeVFX.MaterialFlashEvent?.Invoke(_spaceshipMeshRenderers,_damageMaterial, 1, 0.25f);
     }
 }

@@ -74,6 +74,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdc9986413e1efd46845f7e537adbf09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CannonBall
+  _homingThrust: 10
+  _forwardThrust: 1000
+  _torqueForce: 10
+  _destroyTime: 5
+  _postHitDestroyTime: 0.05
+  _rigidbody: {fileID: 8303717478300541783}
+  _trailRenderer: {fileID: 8885793239958181550}
   _trajectoryCurve:
     serializedVersion: 2
     m_Curve:
@@ -117,14 +124,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _trajectoryArcRatio: 0.05
-  _homingThrust: 10
-  _forwardThrust: 1000
-  _torqueForce: 10
-  _destroyTime: 5
-  _postHitDestroyTime: 0.05
-  _explosionDestroyTime: 5
-  _rigidbody: {fileID: 8303717478300541783}
-  _trailRenderer: {fileID: 8885793239958181550}
 --- !u!1 &1382652225960536041
 GameObject:
   m_ObjectHideFlags: 0

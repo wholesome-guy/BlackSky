@@ -1,27 +1,31 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
+
 public class FloatingJoystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     [SerializeField] private RectTransform _joystickBackground;
     [SerializeField] private RectTransform _joystickKnob;
-    private Vector2 _joystickPosition;
+
+    private Vector2 _joystickPosition; 
+    private float _radius;
     public Vector2 JoystickInput { get; private set; }
 
 
     public void OnDrag(PointerEventData eventData)
     {
         Vector2 joystickDirection = eventData.position - _joystickPosition;
-        JoystickInput = (joystickDirection.magnitude > _joystickBackground.sizeDelta.x/2f)? joystickDirection.normalized : joystickDirection/(_joystickBackground.sizeDelta.x / 2f);
-        _joystickKnob.anchoredPosition = JoystickInput * _joystickBackground.sizeDelta.x / 2;
+        JoystickInput = (joystickDirection.magnitude > _radius) ? joystickDirection.normalized : joystickDirection / (_radius);
+        _joystickKnob.anchoredPosition = JoystickInput * _radius;
 
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        _radius = _joystickBackground.sizeDelta.x / 2f;
+
         _joystickBackground.gameObject.SetActive(true);
-        OnDrag(eventData);
         _joystickPosition = eventData.position;
+         OnDrag(eventData);
         _joystickBackground.position = eventData.position;
         _joystickKnob.anchoredPosition = Vector2.zero;
     }

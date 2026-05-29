@@ -8,10 +8,14 @@ public class UIEffects : MonoBehaviour
 
     private DepthOfField _depthOfField;
     [SerializeField] private float _focusDistance = 1.75f;
-    [SerializeField] private int _focalLength = 130;
-    [SerializeField] private int _aperture = 32;
+    [SerializeField] private float _focalLength = 130;
+    [SerializeField] private float _aperture = 32;
 
     public static Action<bool> SlowMotionEffectEvent;
+
+    private float _slowedTime = 0.25f;
+    private float _normalTime = 1.0f;
+    private float _fixedTimeStep = 0.02f;
 
     private void Start()
     {
@@ -38,15 +42,13 @@ public class UIEffects : MonoBehaviour
         if(boolean)
         {
             _depthOfField.active = true;
-            Time.timeScale = 0.25f;
-            Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            Time.timeScale = _slowedTime;
         }
         else
         {
             _depthOfField.active = false;
-            Time.timeScale = 1.0f;
-            Time.fixedDeltaTime = 0.02f;
+            Time.timeScale = _normalTime;
         }
-
+        Time.fixedDeltaTime = _fixedTimeStep * Time.timeScale;
     }
 }

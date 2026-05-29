@@ -787,6 +787,7 @@ MonoBehaviour:
   _yawTorque: 10
   _pitchTorque: 10
   _rollClamp: 60
+  _rollSmoothteningValue: 2
 --- !u!54 &246566353
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1964,7 +1965,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CrosshairMovement
   _crosshair: {fileID: 492281304}
   _smoothSpeed: 9
-  _spaceship: {fileID: 0}
 --- !u!1 &563731122
 GameObject:
   m_ObjectHideFlags: 0
@@ -2120,7 +2120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectPooling
   _cannonballPrefab: {fileID: 1092108940051103451, guid: 12ac766f7f0aefe439a28c9fb26f7480,
     type: 3}
-  _cannonballPreloadCount: 2
+  _cannonballPreloadCount: 10
   _explosionPrefab: {fileID: 2453768173034396746, guid: 4d1c41736d550644f8105436ed4b8d02,
     type: 3}
   _explosionPreloadCount: 10
@@ -2352,13 +2352,12 @@ MonoBehaviour:
   _maxAimAssistDistance: 500
   _aimAssistRadius: 10
   _aimAssistDisableDistance: 300
-  _cannons:
-  - {fileID: 1083083985}
-  - {fileID: 1261525234}
   _trackableLayer:
     serializedVersion: 2
     m_Bits: 256
-  _trackingObject: {fileID: 0}
+  _cannons:
+  - {fileID: 1083083985}
+  - {fileID: 1261525234}
   Tracker: {fileID: 1854975806}
 --- !u!1 &712817102
 GameObject:
@@ -3480,6 +3479,12 @@ Transform:
   - {fileID: 1083083985}
   m_Father: {fileID: 682506977}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!96 &1358876085 stripped
+TrailRenderer:
+  m_CorrespondingSourceObject: {fileID: 2391583504684916759, guid: aa6cf2b26e3efcf49882ee62af09f730,
+    type: 3}
+  m_PrefabInstance: {fileID: 359899251}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1361308322
 GameObject:
   m_ObjectHideFlags: 0
@@ -4194,18 +4199,23 @@ MonoBehaviour:
   _highParticleRate: 100
   _particles1VFX: {fileID: 894873320}
   _particles2VFX: {fileID: 2104444505}
-  Color1:
-  - {r: 0, g: 1, b: 0.22419739, a: 1}
-  - {r: 1, g: 0.5881361, b: 0, a: 1}
-  - {r: 1, g: 0, b: 0.037010193, a: 1}
-  Color2:
-  - {r: 0.53375554, g: 1, b: 0, a: 1}
-  - {r: 1, g: 0.2329474, b: 0, a: 1}
-  - {r: 0.5602317, g: 0, b: 1, a: 1}
-  Color3:
-  - {r: 0, g: 11.313708, b: 2.5255363, a: 1}
-  - {r: 11.313708, g: 6.682091, b: 0, a: 1}
-  - {r: 11.313708, g: 0, b: 0.4173565, a: 1}
+  _trailRenderers:
+  - {fileID: 1358876085}
+  - {fileID: 1770935651}
+  - {fileID: 46681721}
+  - {fileID: 1970027255}
+  _color1:
+  - {r: 0, g: 1, b: 0.017000437, a: 1}
+  - {r: 1, g: 0.75437355, b: 0, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
+  _color2:
+  - {r: 0, g: 1, b: 0.95010185, a: 1}
+  - {r: 1, g: 0.0757626, b: 0, a: 1}
+  - {r: 1, g: 0, b: 0.28344727, a: 1}
+  _color3:
+  - {r: 0, g: 0.5600939, b: 1, a: 1}
+  - {r: 0.68892694, g: 1, b: 0, a: 1}
+  - {r: 0.41648245, g: 0, b: 1, a: 1}
   _updateInterval: 0.5
 --- !u!1 &1703532844
 GameObject:
@@ -4284,6 +4294,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1704390837}
   - component: {fileID: 1704390838}
+  - component: {fileID: 1704390839}
   m_Layer: 5
   m_Name: Throttle Button
   m_TagString: Untagged
@@ -4354,6 +4365,19 @@ MonoBehaviour:
   _maxThrottleIndex: 3
   _scaleEase: 28
   _fillEase: 10
+--- !u!114 &1704390839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704390836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d54531977ecb194c95e2d3aa7a5d72a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.OnScreen.OnScreenButton
+  m_ControlPath: <Keyboard>/e
 --- !u!1 &1739697491
 GameObject:
   m_ObjectHideFlags: 0
@@ -4567,6 +4591,12 @@ PrefabInstance:
 --- !u!4 &1770935650 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8211768425006183669, guid: aa6cf2b26e3efcf49882ee62af09f730,
+    type: 3}
+  m_PrefabInstance: {fileID: 1770935649}
+  m_PrefabAsset: {fileID: 0}
+--- !u!96 &1770935651 stripped
+TrailRenderer:
+  m_CorrespondingSourceObject: {fileID: 2391583504684916759, guid: aa6cf2b26e3efcf49882ee62af09f730,
     type: 3}
   m_PrefabInstance: {fileID: 1770935649}
   m_PrefabAsset: {fileID: 0}

@@ -24,10 +24,11 @@ public class SpaceshipVFX : MonoBehaviour
 
     [SerializeField] private VisualEffect _particles1VFX;
     [SerializeField] private VisualEffect _particles2VFX;
+    [SerializeField] private TrailRenderer[] _trailRenderers;
 
-    [ColorUsage(true, true)][SerializeField] private Color[] Color1 = new Color[3];
-    [ColorUsage(true, true)][SerializeField] private Color[] Color2 = new Color[3];
-    [ColorUsage(true, true)][SerializeField] private Color[] Color3 = new Color[3];
+    [ColorUsage(true, true)][SerializeField] private Color[] _color1 = new Color[3];
+    [ColorUsage(true, true)][SerializeField] private Color[] _color2 = new Color[3];
+    [ColorUsage(true, true)][SerializeField] private Color[] _color3 = new Color[3];
 
     private struct ThrottleSettings
     {
@@ -52,10 +53,13 @@ public class SpaceshipVFX : MonoBehaviour
     private ParticleSystem.MainModule _windZoneMain;
     private ParticleSystem.EmissionModule _windZoneEmission;
 
+
     private float _spaceshipSpeed;
     private bool _particleBool;
+
     [SerializeField] private float _updateInterval = 0.5f;
     private float _updateTimer;
+
     private static readonly int _thrustPowerID = Shader.PropertyToID("_thrustPower");
     private static readonly int _thrustColour1ID = Shader.PropertyToID("_colour1");
     private static readonly int _thrustColour2ID = Shader.PropertyToID("_colour2");
@@ -84,15 +88,15 @@ public class SpaceshipVFX : MonoBehaviour
         {
             new() { maxSpeed = _lowThrottleSpeed,      thrustValue = _lowThrustValue,
                     particleSpeed = _lowParticleSpeed,  particleRate = _lowParticleRate,
-                    color1 = Color1[0], color2 = Color2[0], color3 = Color3[0], vfxRate = 5f },
+                    color1 = _color1[0], color2 = _color2[0], color3 = _color3[0], vfxRate = 5f },
 
             new() { maxSpeed = _moderateThrottleSpeed,  thrustValue = _moderateThrustValue,
                     particleSpeed = _moderateParticleSpeed, particleRate = _moderateParticleRate,
-                    color1 = Color1[1], color2 = Color2[1], color3 = Color3[1], vfxRate = 10f },
+                    color1 = _color1[1], color2 = _color2[1], color3 = _color3[1], vfxRate = 10f },
 
             new() { maxSpeed = _highThrottleSpeed,      thrustValue = _highThrustValue,
                     particleSpeed = _highParticleSpeed,  particleRate = _highParticleRate,
-                    color1 = Color1[2], color2 = Color2[2], color3 = Color3[2], vfxRate = 15f },
+                    color1 = _color1[2], color2 = _color2[2], color3 = _color3[2], vfxRate = 15f },
         };
 
         _windZoneMain = _windZone.main;
@@ -113,6 +117,7 @@ public class SpaceshipVFX : MonoBehaviour
     }
     private void TimedUpdate()
     {
+
         _thrustValue = Mathf.Clamp(_spaceshipSpeed * _speedToThrustConstant, 0f, _thrustExpectedValue);
         _thrusterMaterial.SetFloat(_thrustPowerID, _thrustValue);
 
@@ -151,10 +156,27 @@ public class SpaceshipVFX : MonoBehaviour
         _particles2VFX.Stop();
         _windZone.Stop();
     }
+    private void TrailRendererSwitch(bool boolean)
+    {
+        int count = _trailRenderers.Length;
+        for (int i = 0; i < count; i++)
+        {
+            _trailRenderers[i].enabled = boolean;
+        }
+    }
 
     private void SelectThrottle(int i)
     {
-        if (i == 0) { ParticlesStop(); return; }
+        if (i == 0) 
+        {
+            _speedToThrustConstant       = 0f;
+            _speedToParticleSpeedConstant = 0f;
+            _speedToParticleRateConstant  = 0f;
+            ParticlesStop();
+            TrailRendererSwitch(false);
+            return;
+        }
+        TrailRendererSwitch(true);
         ApplyThrottle(Mathf.Clamp(i - 1, 0, _throttleSettings.Length - 1));
     }
 

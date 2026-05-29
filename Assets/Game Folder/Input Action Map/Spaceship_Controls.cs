@@ -115,7 +115,7 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""185b9275-a8ef-4fee-970c-9690ae65442e"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

@@ -9,7 +9,7 @@ public class ObjectPooling : MonoBehaviour
     [Header("Cannon Ball")]
     [SerializeField] private GameObject _cannonballPrefab;
     [SerializeField] private int _cannonballPreloadCount = 10;
-    public GenericPoolSystem CannonballPool {  get; private set; }
+    public GenericPoolSystem<ProjectileBase> CannonballPool {  get; private set; }
     
     [Header("Explosion")]
     [SerializeField] private GameObject _explosionPrefab;
@@ -31,7 +31,7 @@ public class ObjectPooling : MonoBehaviour
 
     private void Start()
     {
-        CannonballPool = new GenericPoolSystem(_cannonballPrefab, _cannonballPreloadCount);
+        CannonballPool = new GenericPoolSystem<ProjectileBase>(_cannonballPrefab, _cannonballPreloadCount);
         ExplosionPool = new GenericPoolSystem(_explosionPrefab, _explosionPreloadCount);
     }
 }

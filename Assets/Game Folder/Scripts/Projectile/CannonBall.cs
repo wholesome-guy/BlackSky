@@ -3,27 +3,8 @@ using System.Collections;
 
 public class CannonBall : ProjectileBase
 {
-    [SerializeField] private float _homingThrust = 1000;
-    [SerializeField] private float _forwardThrust = 10;
-    [SerializeField] private float _torqueForce = 1000;
-    [SerializeField] private float _destroyTime = 2f;
-    [SerializeField] private float _postHitDestroyTime = 0.05f;
-    [SerializeField] private float _explosionDestroyTime = 10f;
-    [SerializeField] private Rigidbody _rigidbody;
-    [SerializeField] private TrailRenderer _trailRenderer;
-
     private ObjectPooling _objectPooling;
-    private void Awake()
-    {
-        HomingThrust = _homingThrust;
-        ForwardThrust = _forwardThrust;
-        Torque = _torqueForce;
-        DestroyTime = _destroyTime;
-        PostHitTime = _postHitDestroyTime;
-        Rigidbody = _rigidbody;
-        TrailRenderer = _trailRenderer;
-    }
-   
+
     private void Start()
     {
        _objectPooling = ObjectPooling.Instance;
@@ -34,19 +15,19 @@ public class CannonBall : ProjectileBase
     }
     protected override void OnHit(Collision collision)
     {
-
         StartCoroutine(ExplosionTimer());
-
-        ScheduleDestroyTime(_postHitDestroyTime);
-
         
+        ScheduleDestroyTime(_postHitDestroyTime); 
     }
     private IEnumerator ExplosionTimer()
     {
         GameObject explosion = _objectPooling.ExplosionPool.SpawnObject(transform.position, Quaternion.identity);
 
-        yield return new WaitForSeconds(_explosionDestroyTime);
-
+        float timer = 0f;
+        while (timer < _explosionDestroyTime) 
+        { timer += Time.deltaTime;
+            yield return null;
+        }
         _objectPooling.ExplosionPool.EraseObject(explosion, 0.05f);
     }
 
