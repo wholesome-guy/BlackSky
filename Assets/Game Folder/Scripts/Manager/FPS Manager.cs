@@ -14,7 +14,7 @@ public class FPSManager : MonoBehaviour
     void Start()
     {
         timeleft = updateInterval;
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 30;
     }
 
     void Update()

@@ -102,9 +102,27 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ThrottleChange"",
+                    ""name"": ""Change"",
                     ""type"": ""Button"",
                     ""id"": ""b91fc29e-0355-4b90-9136-4fb462cac4f0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Homing"",
+                    ""type"": ""Button"",
+                    ""id"": ""34d3635b-7fde-4c2f-be2a-dcffa04090ce"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Throttle"",
+                    ""type"": ""Button"",
+                    ""id"": ""cc466b90-77dd-4b65-8acc-77d44663c0da"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -130,7 +148,29 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ThrottleChange"",
+                    ""action"": ""Change"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f60f30b7-e86c-491c-af46-c9bf59ad2c64"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Homing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6818281a-a7b1-4def-9cd7-226ce491844c"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Throttle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -142,7 +182,9 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
         // Spaceship
         m_Spaceship = asset.FindActionMap("Spaceship", throwIfNotFound: true);
         m_Spaceship_Shoot = m_Spaceship.FindAction("Shoot", throwIfNotFound: true);
-        m_Spaceship_ThrottleChange = m_Spaceship.FindAction("ThrottleChange", throwIfNotFound: true);
+        m_Spaceship_Change = m_Spaceship.FindAction("Change", throwIfNotFound: true);
+        m_Spaceship_Homing = m_Spaceship.FindAction("Homing", throwIfNotFound: true);
+        m_Spaceship_Throttle = m_Spaceship.FindAction("Throttle", throwIfNotFound: true);
     }
 
     ~@Spaceship_Controls()
@@ -224,7 +266,9 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Spaceship;
     private List<ISpaceshipActions> m_SpaceshipActionsCallbackInterfaces = new List<ISpaceshipActions>();
     private readonly InputAction m_Spaceship_Shoot;
-    private readonly InputAction m_Spaceship_ThrottleChange;
+    private readonly InputAction m_Spaceship_Change;
+    private readonly InputAction m_Spaceship_Homing;
+    private readonly InputAction m_Spaceship_Throttle;
     /// <summary>
     /// Provides access to input actions defined in input action map "Spaceship".
     /// </summary>
@@ -241,9 +285,17 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Shoot => m_Wrapper.m_Spaceship_Shoot;
         /// <summary>
-        /// Provides access to the underlying input action "Spaceship/ThrottleChange".
+        /// Provides access to the underlying input action "Spaceship/Change".
         /// </summary>
-        public InputAction @ThrottleChange => m_Wrapper.m_Spaceship_ThrottleChange;
+        public InputAction @Change => m_Wrapper.m_Spaceship_Change;
+        /// <summary>
+        /// Provides access to the underlying input action "Spaceship/Homing".
+        /// </summary>
+        public InputAction @Homing => m_Wrapper.m_Spaceship_Homing;
+        /// <summary>
+        /// Provides access to the underlying input action "Spaceship/Throttle".
+        /// </summary>
+        public InputAction @Throttle => m_Wrapper.m_Spaceship_Throttle;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -273,9 +325,15 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
-            @ThrottleChange.started += instance.OnThrottleChange;
-            @ThrottleChange.performed += instance.OnThrottleChange;
-            @ThrottleChange.canceled += instance.OnThrottleChange;
+            @Change.started += instance.OnChange;
+            @Change.performed += instance.OnChange;
+            @Change.canceled += instance.OnChange;
+            @Homing.started += instance.OnHoming;
+            @Homing.performed += instance.OnHoming;
+            @Homing.canceled += instance.OnHoming;
+            @Throttle.started += instance.OnThrottle;
+            @Throttle.performed += instance.OnThrottle;
+            @Throttle.canceled += instance.OnThrottle;
         }
 
         /// <summary>
@@ -290,9 +348,15 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
             @Shoot.canceled -= instance.OnShoot;
-            @ThrottleChange.started -= instance.OnThrottleChange;
-            @ThrottleChange.performed -= instance.OnThrottleChange;
-            @ThrottleChange.canceled -= instance.OnThrottleChange;
+            @Change.started -= instance.OnChange;
+            @Change.performed -= instance.OnChange;
+            @Change.canceled -= instance.OnChange;
+            @Homing.started -= instance.OnHoming;
+            @Homing.performed -= instance.OnHoming;
+            @Homing.canceled -= instance.OnHoming;
+            @Throttle.started -= instance.OnThrottle;
+            @Throttle.performed -= instance.OnThrottle;
+            @Throttle.canceled -= instance.OnThrottle;
         }
 
         /// <summary>
@@ -341,11 +405,25 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnShoot(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "ThrottleChange" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Change" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnThrottleChange(InputAction.CallbackContext context);
+        void OnChange(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Homing" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnHoming(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Throttle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnThrottle(InputAction.CallbackContext context);
     }
 }

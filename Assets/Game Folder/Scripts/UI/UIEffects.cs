@@ -21,6 +21,7 @@ public class UIEffects : MonoBehaviour
     {
         if(_globalVolume.profile.TryGet<DepthOfField>(out _depthOfField))
         {
+            _depthOfField.active = true;
             _depthOfField.active = false;
             _depthOfField.focusDistance.value = _focusDistance;
             _depthOfField.focalLength.value = _focalLength;

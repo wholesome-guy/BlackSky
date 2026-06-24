@@ -16,9 +16,27 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ThrottleChange",
+                    "name": "Change",
                     "type": "Button",
                     "id": "b91fc29e-0355-4b90-9136-4fb462cac4f0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Homing",
+                    "type": "Button",
+                    "id": "34d3635b-7fde-4c2f-be2a-dcffa04090ce",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Throttle",
+                    "type": "Button",
+                    "id": "cc466b90-77dd-4b65-8acc-77d44663c0da",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -44,7 +62,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ThrottleChange",
+                    "action": "Change",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f60f30b7-e86c-491c-af46-c9bf59ad2c64",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Homing",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6818281a-a7b1-4def-9cd7-226ce491844c",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Throttle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

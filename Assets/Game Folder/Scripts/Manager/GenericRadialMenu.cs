@@ -15,7 +15,6 @@ public class GenericRadialMenu : MonoBehaviour
     [Range(0, 360)]
     [SerializeField] private float _rotateCenter;
 
-
     [SerializeField] private Vector2[] _cachedPositions;
     public void BakePositions()
     {

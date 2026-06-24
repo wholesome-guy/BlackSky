@@ -45,15 +45,7 @@ public class ThrottleChangeManager : MonoBehaviour
 
     private bool isThrottleRadialActive = false;
 
-    private void OnEnable()
-    {
-        InputManager.OnThrottleChange += OnThrottleChangePressed;
-    }
-
-    private void OnDisable()
-    {
-        InputManager.OnThrottleChange -= OnThrottleChangePressed;
-    }
+   
 
     private void Awake()
     {
@@ -153,7 +145,10 @@ public class ThrottleChangeManager : MonoBehaviour
                         .SetEase(_scaleEase);
                 }
 
-                UIEffects.SlowMotionEffectEvent?.Invoke(false);
+                DOVirtual.DelayedCall(0.1f, () =>
+                {
+                    UIEffects.SlowMotionEffectEvent?.Invoke(false);
+                });
             });
 
         isThrottleRadialActive = false;

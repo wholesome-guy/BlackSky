@@ -7,11 +7,16 @@ public class CannonControl : MonoBehaviour
     {
         InputManager.OnShoot += ShootProjectile;
         CrosshairMovement.CrosshairPositionAccessor += CrosshairPosition;
+        TargetTracker.AccuracyGetter += GetAccuracy;
+        InputManager.OnHoming += HomingSwitch;
     }
     private void OnDisable()
     {
         InputManager.OnShoot -= ShootProjectile;
         CrosshairMovement.CrosshairPositionAccessor -= CrosshairPosition;
+        TargetTracker.AccuracyGetter -= GetAccuracy;
+        InputManager.OnHoming -= HomingSwitch;
+
     }
     private void Awake()
     {
@@ -30,8 +35,10 @@ public class CannonControl : MonoBehaviour
     [SerializeField] private float _aimAssistRadius = 10f;
     [SerializeField] private float _aimAssistDisableDistance = 100f; 
     [SerializeField] private LayerMask _trackableLayer;
+    private float _accuracy;
     private Transform _trackingObject;
     private bool _aimAssist = false;
+    private bool _masterHoming = false;
 
     [Header("Cannons")]
     [SerializeField] private Transform[] _cannons;
@@ -41,8 +48,7 @@ public class CannonControl : MonoBehaviour
     private Camera _mainCamera;
     private WaitForSeconds _waitReloadDuration;
     private ObjectPooling _objectPooling;
-
-    [SerializeField] private Transform Tracker;
+    private bool _isTrackerActive = false;
 
 
     private void Start()
@@ -54,7 +60,10 @@ public class CannonControl : MonoBehaviour
     {
         Ray crosshairRay = _mainCamera.ScreenPointToRay(_crosshairPosition);
         RaycastCannonMovement(crosshairRay);
-        SpherecastAimAssist(crosshairRay);
+        if (_masterHoming)
+        {
+            SpherecastAimAssist(crosshairRay);
+        }
     }
     private void RaycastCannonMovement(Ray inputRay)
     {
@@ -85,13 +94,21 @@ public class CannonControl : MonoBehaviour
             _aimAssist = true;
         }
 
-        if (_aimAssist)
+        if (_aimAssist && _trackingObject)
         {
-            if (!_trackingObject) return;
+            Vector2 trackingObjectScreenPosition = _mainCamera.WorldToScreenPoint(_trackingObject.position);
+            float distanceTrackerCrosshair = Vector2.Distance(trackingObjectScreenPosition, _crosshairPosition);
 
-            Vector3 trackingObjectScreenPosition = _mainCamera.WorldToScreenPoint(_trackingObject.position);
-            float distanceTrackerCrosshair = Vector3.Distance(trackingObjectScreenPosition, _crosshairPosition);
-            Tracker.position = trackingObjectScreenPosition;
+            if (!_isTrackerActive)
+            {
+                TargetTracker.OnTrackerActiveSwitch?.Invoke(true);
+                _isTrackerActive = true;
+            }
+            else
+            {
+                TargetTracker.OnTrackerSetPosition?.Invoke(trackingObjectScreenPosition);
+            }
+
 
             if (distanceTrackerCrosshair > _aimAssistDisableDistance)
             {
@@ -101,7 +118,11 @@ public class CannonControl : MonoBehaviour
         }
         else
         {
-            Tracker.position = _crosshairPosition;
+            if (_isTrackerActive)
+            {
+                TargetTracker.OnTrackerActiveSwitch?.Invoke(false);
+                _isTrackerActive = false;
+            }
         }
 
     }
@@ -129,7 +150,11 @@ public class CannonControl : MonoBehaviour
         for(int i = 0; i < count; i++)
         {
             var (obj, projectile) = _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
-            projectile.InitialiseDirectionOfProjectile(_trackingObject, _aimAssist);
+            if(!_trackingObject||!_masterHoming)
+            {
+                _aimAssist = false;
+            }
+            projectile.InitialiseProjectileTrajectory(_trackingObject, _aimAssist,_accuracy);
         }
 
         _canShoot = false;
@@ -137,6 +162,15 @@ public class CannonControl : MonoBehaviour
 
     }
 
+    private void GetAccuracy(float accuracy)
+    {
+        _accuracy = accuracy;
+    }
+    private void HomingSwitch()
+    {
+        _masterHoming = !_masterHoming;
+        HomingButton.ToggleHoming.Invoke(_masterHoming);
+    }
     private IEnumerator ReloadProjectile()
     {
         ShootButton.ReloadUIEffect?.Invoke(_reloadDuration);

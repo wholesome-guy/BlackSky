@@ -6,7 +6,7 @@ public abstract class ProjectileBase: MonoBehaviour
     [Header("Thrust and Torque")]
     [SerializeField] private float _homingThrust = 1000;
     [SerializeField] private float _forwardThrust = 10;
-    [SerializeField] private float _torqueForce = 1000;
+    //[SerializeField] private float _torqueForce = 1000;
 
     [Header("Timers")]
     [SerializeField] private float _destroyTime = 2f;
@@ -26,7 +26,9 @@ public abstract class ProjectileBase: MonoBehaviour
     [Header("Trajectory Controls")]
     [SerializeField] private AnimationCurve _trajectoryCurve;
     [SerializeField] private float _trajectoryArcRatio = 0.1f;
+    [SerializeField] private float _maxMissRadius = 20f;
 
+    private Vector3 _targetOffset;
     private float _maxTrajectoryArc;
     private float _travelTime;
     private float _elapsedTime = 0f;
@@ -60,10 +62,15 @@ public abstract class ProjectileBase: MonoBehaviour
         _homingEnabled = false;
         destroyScheduled = false;
     }
-    public void InitialiseDirectionOfProjectile(Transform targetObject,bool homing)
+    public void InitialiseProjectileTrajectory(Transform targetObject,bool homing,float accuracy)
     {
         _targetObject = targetObject;
-        _homingEnabled = homing;        
+        _homingEnabled = homing;
+
+        float missRadius = Mathf.Lerp(_maxMissRadius,0f, accuracy / 100f);   
+        float forwardMiss = Random.Range(0f, missRadius);
+        Vector3 randomDirection = Random.insideUnitSphere;
+        _targetOffset = randomDirection * missRadius + randomDirection*forwardMiss;
     }
     protected virtual void Movement()
     {
@@ -80,15 +87,17 @@ public abstract class ProjectileBase: MonoBehaviour
     }
     private void TrajectoryMovement(Vector3 startPosition, Vector3 endPosition)
     {
-        if (Vector3.SqrMagnitude(endPosition - _cachedEndPosition) > _retargetThreshold * _retargetThreshold)
+        Vector3 adjustedEndPosition = endPosition + _targetOffset;
+
+        if (Vector3.SqrMagnitude(adjustedEndPosition - _cachedEndPosition) > _retargetThreshold * _retargetThreshold)
         {
-            float distance = Vector3.Distance(startPosition, endPosition);
+            float distance = Vector3.Distance(startPosition, adjustedEndPosition);
             _travelTime = distance / _homingThrust;
             _maxTrajectoryArc = distance * _trajectoryArcRatio;
-            _cachedEndPosition = endPosition;
+            _cachedEndPosition = adjustedEndPosition;
             _cachedStartPosition = startPosition;
 
-            Vector3 travelDirection = (endPosition - startPosition).normalized;
+            Vector3 travelDirection = (adjustedEndPosition - startPosition).normalized;
             Vector3 arcAxis = Vector3.Cross(travelDirection, transform.forward);
             _cachedArcAxis = arcAxis.normalized;
         }
@@ -101,10 +110,15 @@ public abstract class ProjectileBase: MonoBehaviour
 
         Vector3 finalPosition = linearInterpolation + _cachedArcAxis * arcPosition;
 
-        Vector3 moveDirection = (finalPosition - _rigidbody.position).normalized;
-
         _rigidbody.MovePosition(finalPosition);
-        //Rigidbody.MoveRotation(Quaternion.LookRotation(moveDirection));
+
+        Vector3 moveDirection =
+        (finalPosition - _rigidbody.position).normalized;
+
+        if (moveDirection.sqrMagnitude > 0.001f)
+        {
+            _rigidbody.MoveRotation(Quaternion.LookRotation(moveDirection));
+        }
 
     }
 

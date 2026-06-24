@@ -14,8 +14,9 @@ public class InputManager : MonoBehaviour
     public Vector2 PitchYawRollInput { get; private set; }
 
     public static Action OnShoot;
-    public static Action OnThrottleChange;
-
+    public static Action OnChange;
+    public static Action OnHoming;
+    public static Action OnThrottle;
 
     private void Awake()
     {
@@ -34,16 +35,21 @@ public class InputManager : MonoBehaviour
     {
         _spaceshipControls.Enable();
         _spaceshipControls.Spaceship.Shoot.performed += ShootInput;
-        _spaceshipControls.Spaceship.ThrottleChange.performed += ThrottleChangeInput;
+        _spaceshipControls.Spaceship.Change.performed += ChangeInput;
+        _spaceshipControls.Spaceship.Homing.performed += HomingSwitch;
+        _spaceshipControls.Spaceship.Throttle.performed += ThrottleInput;
+
     }
 
-   
+
 
     private void OnDisable()
     {
         _spaceshipControls.Disable();
         _spaceshipControls.Spaceship.Shoot.performed -= ShootInput;
-        _spaceshipControls.Spaceship.ThrottleChange.performed -= ThrottleChangeInput;
+        _spaceshipControls.Spaceship.Change.performed -= ChangeInput;
+        _spaceshipControls.Spaceship.Homing.performed -= HomingSwitch;
+        _spaceshipControls.Spaceship.Throttle.performed -= ThrottleInput;
 
     }
 
@@ -56,15 +62,22 @@ public class InputManager : MonoBehaviour
     {
         OnShoot?.Invoke();
     }
-    private void ThrottleChangeInput(InputAction.CallbackContext context)
+    private void ChangeInput(InputAction.CallbackContext context)
     {
-        OnThrottleChange?.Invoke();
+        OnChange?.Invoke();
     }
     private void JoystickInput()
     {
         PitchYawRollInput = _floatingJoystickScript.JoystickInput;
     }
+    private void HomingSwitch(InputAction.CallbackContext context)
+    {
+        OnHoming?.Invoke();
+    }
 
-
+    private void ThrottleInput(InputAction.CallbackContext context)
+    {
+        OnThrottle?.Invoke();
+    }
 
 }
