@@ -127,6 +127,15 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ProjectileChange"",
+                    ""type"": ""Button"",
+                    ""id"": ""1a8e5119-a6b8-4f2c-a787-988ae83aad62"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -173,6 +182,17 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Throttle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d558cd69-c932-4784-84d1-f92fef71a05c"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ProjectileChange"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -185,6 +205,7 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
         m_Spaceship_Change = m_Spaceship.FindAction("Change", throwIfNotFound: true);
         m_Spaceship_Homing = m_Spaceship.FindAction("Homing", throwIfNotFound: true);
         m_Spaceship_Throttle = m_Spaceship.FindAction("Throttle", throwIfNotFound: true);
+        m_Spaceship_ProjectileChange = m_Spaceship.FindAction("ProjectileChange", throwIfNotFound: true);
     }
 
     ~@Spaceship_Controls()
@@ -269,6 +290,7 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Spaceship_Change;
     private readonly InputAction m_Spaceship_Homing;
     private readonly InputAction m_Spaceship_Throttle;
+    private readonly InputAction m_Spaceship_ProjectileChange;
     /// <summary>
     /// Provides access to input actions defined in input action map "Spaceship".
     /// </summary>
@@ -296,6 +318,10 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Spaceship/Throttle".
         /// </summary>
         public InputAction @Throttle => m_Wrapper.m_Spaceship_Throttle;
+        /// <summary>
+        /// Provides access to the underlying input action "Spaceship/ProjectileChange".
+        /// </summary>
+        public InputAction @ProjectileChange => m_Wrapper.m_Spaceship_ProjectileChange;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -334,6 +360,9 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
             @Throttle.started += instance.OnThrottle;
             @Throttle.performed += instance.OnThrottle;
             @Throttle.canceled += instance.OnThrottle;
+            @ProjectileChange.started += instance.OnProjectileChange;
+            @ProjectileChange.performed += instance.OnProjectileChange;
+            @ProjectileChange.canceled += instance.OnProjectileChange;
         }
 
         /// <summary>
@@ -357,6 +386,9 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
             @Throttle.started -= instance.OnThrottle;
             @Throttle.performed -= instance.OnThrottle;
             @Throttle.canceled -= instance.OnThrottle;
+            @ProjectileChange.started -= instance.OnProjectileChange;
+            @ProjectileChange.performed -= instance.OnProjectileChange;
+            @ProjectileChange.canceled -= instance.OnProjectileChange;
         }
 
         /// <summary>
@@ -425,5 +457,12 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnThrottle(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ProjectileChange" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnProjectileChange(InputAction.CallbackContext context);
     }
 }

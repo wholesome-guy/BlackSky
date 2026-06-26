@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class CannonControl : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class CannonControl : MonoBehaviour
         CrosshairMovement.CrosshairPositionAccessor += CrosshairPosition;
         TargetTracker.AccuracyGetter += GetAccuracy;
         InputManager.OnHoming += HomingSwitch;
+        ProjectileSelecter += ProjectileIndexSetter;
     }
     private void OnDisable()
     {
@@ -16,6 +18,7 @@ public class CannonControl : MonoBehaviour
         CrosshairMovement.CrosshairPositionAccessor -= CrosshairPosition;
         TargetTracker.AccuracyGetter -= GetAccuracy;
         InputManager.OnHoming -= HomingSwitch;
+        ProjectileSelecter -= ProjectileIndexSetter;
 
     }
     private void Awake()
@@ -46,10 +49,12 @@ public class CannonControl : MonoBehaviour
     private Vector2 _crosshairPosition;
     private bool _canShoot = true;
     private Camera _mainCamera;
+    private int _projectileIndex;
     private WaitForSeconds _waitReloadDuration;
     private ObjectPooling _objectPooling;
     private bool _isTrackerActive = false;
 
+    public static Action<int> ProjectileSelecter;
 
     private void Start()
     {
@@ -149,8 +154,8 @@ public class CannonControl : MonoBehaviour
         int count = _cannons.Length;
         for(int i = 0; i < count; i++)
         {
-            var (obj, projectile) = _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
-            if(!_trackingObject||!_masterHoming)
+            var (obj, projectile) = SelectProjectile(0);
+            if (!_trackingObject||!_masterHoming)
             {
                 _aimAssist = false;
             }
@@ -160,6 +165,28 @@ public class CannonControl : MonoBehaviour
         _canShoot = false;
         StartCoroutine(ReloadProjectile());
 
+    }
+    private void ProjectileIndexSetter(int i)
+    {
+        _projectileIndex = i;
+    }
+    private (GameObject gameObject,ProjectileBase projectile) SelectProjectile(int i)
+    {
+        switch(i)
+        {
+            case 0:
+                return _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
+            case 1:
+                return _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
+            case 2:
+                return _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
+            case 3:
+                return _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
+            case 4:
+                return _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
+            default:
+                return _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
+        }
     }
 
     private void GetAccuracy(float accuracy)

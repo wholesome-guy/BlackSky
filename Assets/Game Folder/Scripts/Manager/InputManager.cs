@@ -17,6 +17,7 @@ public class InputManager : MonoBehaviour
     public static Action OnChange;
     public static Action OnHoming;
     public static Action OnThrottle;
+    public static Action OnProjectileChange;
 
     private void Awake()
     {
@@ -38,6 +39,7 @@ public class InputManager : MonoBehaviour
         _spaceshipControls.Spaceship.Change.performed += ChangeInput;
         _spaceshipControls.Spaceship.Homing.performed += HomingSwitch;
         _spaceshipControls.Spaceship.Throttle.performed += ThrottleInput;
+        _spaceshipControls.Spaceship.ProjectileChange.performed += ProjectileSelector;
 
     }
 
@@ -50,6 +52,7 @@ public class InputManager : MonoBehaviour
         _spaceshipControls.Spaceship.Change.performed -= ChangeInput;
         _spaceshipControls.Spaceship.Homing.performed -= HomingSwitch;
         _spaceshipControls.Spaceship.Throttle.performed -= ThrottleInput;
+        _spaceshipControls.Spaceship.ProjectileChange.performed -= ProjectileSelector;
 
     }
 
@@ -78,6 +81,11 @@ public class InputManager : MonoBehaviour
     private void ThrottleInput(InputAction.CallbackContext context)
     {
         OnThrottle?.Invoke();
+    }
+
+    private void ProjectileSelector(InputAction.CallbackContext context)
+    {
+        OnProjectileChange?.Invoke();
     }
 
 }
