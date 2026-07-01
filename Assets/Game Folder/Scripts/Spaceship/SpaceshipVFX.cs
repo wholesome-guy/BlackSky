@@ -103,7 +103,7 @@ public class SpaceshipVFX : MonoBehaviour
         _windZoneEmission = _windZone.emission;
         _updateTimer = 0;
 
-        ApplyThrottle(0);
+        SelectThrottle(0);
     }
 
     private void Update()

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SpaceshipMovement : MonoBehaviour
 {
@@ -7,8 +8,9 @@ public class SpaceshipMovement : MonoBehaviour
     [Header("Spaceship Body")]
     [SerializeField] private Rigidbody _spaceshipRigidbody;
     [SerializeField] private Transform _spaceshipMesh;
-    [SerializeField] private Transform _cannons;
-    [SerializeField] private Transform _VFX;
+    [SerializeField] private Transform[] _spaceshipModules;
+
+    private int _spaceshipModulesCount;
 
     [Header("Throttle")]
     [SerializeField] private float _lowThrottle;
@@ -20,8 +22,11 @@ public class SpaceshipMovement : MonoBehaviour
     [SerializeField] private float _pitchTorque;
     [SerializeField] private float _rollClamp;
     [SerializeField] private float _rollSmoothteningValue = 2f;
+
     private Vector2 _rotationalInput;
     private InputManager _inputManager;
+
+
 
     private float _speed;
     public static Action<int> ThrottleChange;
@@ -42,7 +47,9 @@ public class SpaceshipMovement : MonoBehaviour
     {
         _inputManager = InputManager.Instance;
 
-        _throttle = _lowThrottle;
+        _throttle = 0;
+
+        _spaceshipModulesCount =  _spaceshipModules.Length;
 
         //Access to player transform for calculations
         TransformAccess?.Invoke(transform);
@@ -82,9 +89,10 @@ public class SpaceshipMovement : MonoBehaviour
 
         _spaceshipMesh.localEulerAngles = new Vector3(0f, 0f, smoothedRoll);
 
-        _cannons.SetPositionAndRotation(_spaceshipMesh.position, _spaceshipMesh.rotation);
-
-        _VFX.SetPositionAndRotation(_spaceshipMesh.position, _spaceshipMesh.rotation);
+        for(int i = 0; i < _spaceshipModulesCount; i++ )
+        {
+            _spaceshipModules[i].SetPositionAndRotation(_spaceshipMesh.position, _spaceshipMesh.rotation);
+        }
     }
 
     private void Yaw()

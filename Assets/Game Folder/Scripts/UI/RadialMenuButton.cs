@@ -15,27 +15,29 @@ public abstract class RadialMenuButton : MonoBehaviour
     [SerializeField] private float _hideScale = 0f;
     [SerializeField] private float _scaleDuration = 0.2f;
     [SerializeField] private float _fillDuration = 0.25f;
-    [SerializeField] private float _delayDuration = 0.5f;
+    [SerializeField] private float _delayDuration = 0.25f;
     [SerializeField] private float _inactiveAlpha = 0.1f;
     [SerializeField] private float _activeAlpha = 1f;
     [SerializeField] private Ease _tweenEase;
-    private Sequence _scaleSequence;
+    protected Sequence _scaleSequence;
 
     private Color _inactiveColor;
     private Color _activeColor;
 
-    private bool _isRadialMenuActive = false;
+    public bool _isRadialMenuActive { get; private set; }
 
     private void Awake()
     {
         _inactiveColor = new Color(1f, 1f, 1f, _inactiveAlpha);
         _activeColor = new Color(1f, 1f, 1f, _activeAlpha);
         _scaleSequence = DOTween.Sequence();
+        _isRadialMenuActive = false;
     }
     protected abstract void OnButtonPress();
 
     protected void RadialMenuState(bool requiredState)
     {
+        _scaleSequence.Kill();
         if (requiredState)
         {
             _scaleSequence.Append(_buttonTransform.DOScale(_expandedScale, _scaleDuration).SetEase(_tweenEase));
@@ -47,8 +49,10 @@ public abstract class RadialMenuButton : MonoBehaviour
             _radialMenu.gameObject.SetActive(false);
             _isRadialMenuActive = true;
 
-            _radialMenu.gameObject.SetActive(true);
-            _radialMenu.DOScale(_normalScale, _scaleDuration).SetEase(_tweenEase);
+            DOVirtual.DelayedCall(_delayDuration, () => {
+                _radialMenu.gameObject.SetActive(true);
+                _radialMenu.DOScale(_normalScale, _scaleDuration).SetEase(_tweenEase);
+            });
         }
         else
         {
@@ -59,10 +63,14 @@ public abstract class RadialMenuButton : MonoBehaviour
 
 
             _isRadialMenuActive = false;
-            _radialMenu.DOScale(_hideScale, _scaleDuration).SetEase(_tweenEase).OnComplete(() =>
-            {
-                _radialMenu.gameObject.SetActive(false);
+
+            DOVirtual.DelayedCall(_delayDuration, () => {
+                _radialMenu.DOScale(_hideScale, _scaleDuration).SetEase(_tweenEase).OnComplete(() =>
+                {
+                    _radialMenu.gameObject.SetActive(false);
+                });
             });
+            
 
         }
     }

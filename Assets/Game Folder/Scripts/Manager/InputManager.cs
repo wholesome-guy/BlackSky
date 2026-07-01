@@ -19,6 +19,8 @@ public class InputManager : MonoBehaviour
     public static Action OnThrottle;
     public static Action OnProjectileChange;
 
+
+    private bool _canShoot = true;
     private void Awake()
     {
         if(Instance != null && Instance != this)
@@ -63,11 +65,13 @@ public class InputManager : MonoBehaviour
 
     private void ShootInput(InputAction.CallbackContext context)
     {
+        if (!_canShoot) return;
         OnShoot?.Invoke();
     }
     private void ChangeInput(InputAction.CallbackContext context)
     {
         OnChange?.Invoke();
+        _canShoot = !_canShoot;
     }
     private void JoystickInput()
     {

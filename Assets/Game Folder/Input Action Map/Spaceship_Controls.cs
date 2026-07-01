@@ -142,7 +142,7 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""185b9275-a8ef-4fee-970c-9690ae65442e"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -164,7 +164,7 @@ public partial class @Spaceship_Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f60f30b7-e86c-491c-af46-c9bf59ad2c64"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/3"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

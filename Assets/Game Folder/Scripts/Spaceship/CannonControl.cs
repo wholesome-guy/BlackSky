@@ -28,7 +28,7 @@ public class CannonControl : MonoBehaviour
 
     [Header("Reload Time")]
     [SerializeField] private float _reloadDuration = 5f;
-
+    [SerializeField] private float _cannonOffset = 5f;
 
     [Header("Shoot Distances")]
     [SerializeField] private float _maxShootDistance = 100f;
@@ -40,7 +40,7 @@ public class CannonControl : MonoBehaviour
     [SerializeField] private LayerMask _trackableLayer;
     private float _accuracy;
     private Transform _trackingObject;
-    private bool _aimAssist = false;
+    public bool _aimAssist = false;
     private bool _masterHoming = false;
 
     [Header("Cannons")]
@@ -115,20 +115,16 @@ public class CannonControl : MonoBehaviour
             }
 
 
-            if (distanceTrackerCrosshair > _aimAssistDisableDistance)
+            if (distanceTrackerCrosshair > _aimAssistDisableDistance && _isTrackerActive)
             {
                 _aimAssist = false;
                 _trackingObject = null;
-            }
-        }
-        else
-        {
-            if (_isTrackerActive)
-            {
                 TargetTracker.OnTrackerActiveSwitch?.Invoke(false);
                 _isTrackerActive = false;
+                
             }
         }
+        
 
     }
 
@@ -137,7 +133,17 @@ public class CannonControl : MonoBehaviour
         int count = _cannons.Length;
         for (int i = 0; i < count; i++)
         {
-            Vector3 direction = target - _cannons[i].position;
+            Vector3 offsetVector = Vector3.right;
+
+            if(i % 2 == 0)
+            {
+                offsetVector = offsetVector * _cannonOffset * -1;
+            }
+            else
+            {
+                offsetVector = offsetVector * _cannonOffset;
+            }
+                Vector3 direction = target - _cannons[i].position + offsetVector;
 
             _cannons[i].rotation = Quaternion.LookRotation(direction);
         }
@@ -154,7 +160,7 @@ public class CannonControl : MonoBehaviour
         int count = _cannons.Length;
         for(int i = 0; i < count; i++)
         {
-            var (obj, projectile) = SelectProjectile(0);
+            var (obj, projectile) = SelectProjectile(_projectileIndex,i);
             if (!_trackingObject||!_masterHoming)
             {
                 _aimAssist = false;
@@ -170,22 +176,22 @@ public class CannonControl : MonoBehaviour
     {
         _projectileIndex = i;
     }
-    private (GameObject gameObject,ProjectileBase projectile) SelectProjectile(int i)
+    private (GameObject gameObject,ProjectileBase projectile) SelectProjectile(int projectileIndex,int cannonIndex)
     {
-        switch(i)
+        switch(projectileIndex)
         {
             case 0:
-                return _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
+                return _objectPooling.CannonballPool.SpawnObject(_cannons[cannonIndex].position, _cannons[cannonIndex].rotation);
             case 1:
-                return _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
+                return _objectPooling.AsteroidAnchorPool.SpawnObject(_cannons[cannonIndex].position, _cannons[cannonIndex].rotation);
             case 2:
-                return _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
+                return _objectPooling.CannonballPool.SpawnObject(_cannons[cannonIndex].position, _cannons[cannonIndex].rotation);
             case 3:
-                return _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
+                return _objectPooling.CannonballPool.SpawnObject(_cannons[cannonIndex].position, _cannons[cannonIndex].rotation);
             case 4:
-                return _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
+                return _objectPooling.CannonballPool.SpawnObject(_cannons[cannonIndex].position, _cannons[cannonIndex].rotation);
             default:
-                return _objectPooling.CannonballPool.SpawnObject(_cannons[i].position, _cannons[i].rotation);
+                return _objectPooling.CannonballPool.SpawnObject(_cannons[cannonIndex].position, _cannons[cannonIndex].rotation);
         }
     }
 

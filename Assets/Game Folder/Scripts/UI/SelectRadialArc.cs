@@ -17,6 +17,7 @@ public abstract class SelectRadialArc : MonoBehaviour
     [SerializeField] private float _expandedScale = 1.5f;
     [SerializeField] private float _normalScale = 1.0f;
     [SerializeField] private float _scaleDuration = 0.2f;
+    [SerializeField] private float _delayDuration = 0.25f;
     [SerializeField] private Ease _tweenEase;
 
 
@@ -36,13 +37,12 @@ public abstract class SelectRadialArc : MonoBehaviour
         _scaleSequence = DOTween.Sequence();
         _scaleSequence.Append(_arcTransform.DOScale(_expandedScale, _scaleDuration).SetEase(_tweenEase));
         _scaleSequence.Append(_arcTransform.DOScale(_normalScale, _scaleDuration).SetEase(_tweenEase));
-        _scaleSequence.OnComplete(() =>
-        {
-            _centreRing.color = Color.white;
-            ChangeButton.ChangeButtonStateSetter.Invoke(false);
-            _centreText.text = ""; 
-            OnClick();
 
+        DOVirtual.DelayedCall(_delayDuration, () => {
+            _centreRing.color = Color.white;
+            ChangeButton.ChangeButtonStateSetter?.Invoke(false);
+            _centreText.text = "";
+            OnClick();
         });
 
 

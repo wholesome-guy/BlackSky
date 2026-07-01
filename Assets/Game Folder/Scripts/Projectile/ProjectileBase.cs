@@ -120,7 +120,7 @@ public abstract class ProjectileBase: MonoBehaviour
             _rigidbody.MoveRotation(Quaternion.LookRotation(moveDirection));
         }
 
-    }
+    } 
 
     protected virtual void OnCollisionEnter(Collision collision)
     {

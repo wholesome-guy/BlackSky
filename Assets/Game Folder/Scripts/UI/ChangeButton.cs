@@ -41,8 +41,10 @@ public class ChangeButton : MonoBehaviour
     public static Action<bool> ChangeButtonStateSetter;
     private Color _inactiveColor;
     private Color _activeColor;
-
     private Tween _arcTween;
+
+    [SerializeField] private RadialMenuButton _throttleButton;
+    [SerializeField] private RadialMenuButton _projectileButton;
 
     private void OnEnable()
     {
@@ -67,7 +69,6 @@ public class ChangeButton : MonoBehaviour
         if (_isChangeRadialMenuActive)
         {
             ChangeButtonState(false);
-            ThrottleButton.ThrottleRadialMenuStateSetter?.Invoke(false);
         }
         else 
         {
@@ -123,6 +124,15 @@ public class ChangeButton : MonoBehaviour
         {
             _isChangeRadialMenuActive = false;
 
+            if (_throttleButton._isRadialMenuActive)
+            {
+                ThrottleButton.ThrottleRadialMenuStateSetter?.Invoke(false);
+            }
+            if (_projectileButton._isRadialMenuActive)
+            {
+                ProjectileButton.ProjectileRadialMenuStateSetter?.Invoke(false);
+            }
+
             _changeButtonTransform.DOKill();
             _changeButtonTransform
                 .DOScale(_normalScale, _scaleAnimationDuration)
@@ -150,8 +160,9 @@ public class ChangeButton : MonoBehaviour
                             .DOScale(_normalScale, _scaleAnimationDuration)
                             .SetEase(_scaleEase);
                     }
+                    
 
-                    DOVirtual.DelayedCall(0.1f, () =>
+                    DOVirtual.DelayedCall(0.25f, () =>
                     {
                         UIEffects.SlowMotionEffectEvent?.Invoke(false);
                     });
