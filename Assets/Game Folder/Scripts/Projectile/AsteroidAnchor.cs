@@ -48,6 +48,7 @@ public class AsteroidAnchor : ProjectileBase
             Destroy(_collider);
             Destroy(_trailRenderer);
             transform.SetParent(collision.gameObject.transform);
+            destroyScheduled = true;
 
             transform.position = interceptVector;
             transform.rotation = normalVector;
