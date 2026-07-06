@@ -2,23 +2,22 @@ using UnityEngine;
 using System;
 
 public class SpaceshipAnchor : MonoBehaviour
-{
-    [SerializeField] private Transform[] _spaceshipAnchorTransforms;
-    public static Action<Transform> SpaceshipAnchorTransformAccess;
-    public static Action<int> SelectSpaceshipAnchor;
+{[SerializeField] private Transform[] _spaceshipAnchorTransforms;
+    public static Func<int, Transform> GetSpaceshipAnchorTransform;
 
     private void OnEnable()
     {
-        SelectSpaceshipAnchor += ChooseShipAnchor;
-    }
-    private void OnDisable()
-    {
-        SelectSpaceshipAnchor -= ChooseShipAnchor;
+        GetSpaceshipAnchorTransform += ChooseShipAnchor;
     }
 
-    private void ChooseShipAnchor(int index)
+    private void OnDisable()
     {
-        SpaceshipAnchorTransformAccess?.Invoke(_spaceshipAnchorTransforms[index]);
+        GetSpaceshipAnchorTransform -= ChooseShipAnchor;
+    }
+
+    private Transform ChooseShipAnchor(int index)
+    {
+        return _spaceshipAnchorTransforms[index];
     }
 
 }

@@ -3656,10 +3656,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectPooling
   _cannonballPrefab: {fileID: 1092108940051103451, guid: 12ac766f7f0aefe439a28c9fb26f7480, type: 3}
   _cannonballPreloadCount: 10
-  _asteroidAnchorPrefab: {fileID: 9106621855147303834, guid: 1990e31cb35847d44b1cb9c6e257ad84, type: 3}
+  _asteroidAnchorLeftPrefab: {fileID: 9106621855147303834, guid: 1990e31cb35847d44b1cb9c6e257ad84, type: 3}
   _asteroidAncorPreloadCount: 10
-  _asteroidStickingAnchorPrefab: {fileID: 7328621918810917385, guid: 506c480110e8c504d86bb43cfba2409d, type: 3}
-  _asteroidStickingAncorPreloadCount: 10
+  _asteroidAnchorRightPrefab: {fileID: 9106621855147303834, guid: 268ca6aab83f1b54b85b3248019f3ebf, type: 3}
   _explosionPrefab: {fileID: 2453768173034396746, guid: 4d1c41736d550644f8105436ed4b8d02, type: 3}
   _explosionPreloadCount: 10
 --- !u!114 &617388391
@@ -5284,7 +5283,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &988801329
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8821,7 +8820,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1834686874
 Transform:
   m_ObjectHideFlags: 0

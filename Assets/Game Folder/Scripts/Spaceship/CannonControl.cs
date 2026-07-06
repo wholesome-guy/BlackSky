@@ -183,7 +183,14 @@ public class CannonControl : MonoBehaviour
             case 0:
                 return _objectPooling.CannonballPool.SpawnObject(_cannons[cannonIndex].position, _cannons[cannonIndex].rotation);
             case 1:
-                return _objectPooling.AsteroidAnchorPool.SpawnObject(_cannons[cannonIndex].position, _cannons[cannonIndex].rotation);
+                if(cannonIndex % 2 == 0)
+                {
+                   return _objectPooling.AsteroidAnchorLeftPool.SpawnObject(_cannons[cannonIndex].position, _cannons[cannonIndex].rotation);
+                }
+                else
+                {
+                    return _objectPooling.AsteroidAnchorRightPool.SpawnObject(_cannons[cannonIndex].position, _cannons[cannonIndex].rotation);
+                }
             case 2:
                 return _objectPooling.CannonballPool.SpawnObject(_cannons[cannonIndex].position, _cannons[cannonIndex].rotation);
             case 3:

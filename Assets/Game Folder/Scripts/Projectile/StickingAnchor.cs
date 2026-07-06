@@ -3,29 +3,19 @@ using UnityEngine;
 public class StickingAnchor : MonoBehaviour
 {
 [SerializeField] private int _spaceshipAnchorIndex;
-private Transform _spaceshipAnchorTransform;
-
-    private void OnEnable()
-    {
-        SpaceshipAnchor.SpaceshipAnchorTransformAccess += SpaceshipAnchorTransformAccess;
-    }
-
-    private void OnDisable()
-    {
-        SpaceshipAnchor.SpaceshipAnchorTransformAccess -= SpaceshipAnchorTransformAccess;
-    }
+[SerializeField] private Transform _spaceshipAnchorTransform;
 
     void Start()
     {
-        SpaceshipAnchor.SelectSpaceshipAnchor?.Invoke(_spaceshipAnchorIndex);
+        _spaceshipAnchorTransform = SpaceshipAnchor.GetSpaceshipAnchorTransform?.Invoke(_spaceshipAnchorIndex);
     }
-    public void AnchorIndexSetter(int index)
+    public int SpaceshipAnchorIndexGetter()
     {
-        _spaceshipAnchorIndex = index;
+        return _spaceshipAnchorIndex;
     }
-    private void SpaceshipAnchorTransformAccess(Transform anchorTransform)
-    {
-        _spaceshipAnchorTransform = anchorTransform;
-    }
+}    
 
-}
+    
+    
+
+

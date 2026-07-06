@@ -4,10 +4,15 @@ using UnityEngine;
 public class AsteroidAnchor : ProjectileBase
 {
     [Header("Asteroid Sticking Anchor")]
-    [SerializeField] private GameObject _asteroidStickingAnchorPrefab;
+    [SerializeField] private MeshRenderer _meshRenderer;
+    [SerializeField] private MeshFilter _meshFilter;
+    [SerializeField] private SphereCollider _collider;
+    [SerializeField] private StickingAnchor _stickingAnchor;
+    [SerializeField] private Mesh _stickingAnchorMesh;
+    [SerializeField] private Material _stickingAnchorMaterial;
+
     [SerializeField] private float _asteroidStickingAnchorDepth;
     [SerializeField] private string _asteroidsTag;
-    [SerializeField] private int _anchorIndex;
     private ObjectPooling _objectPooling;
 
     private void Start()
@@ -16,7 +21,16 @@ public class AsteroidAnchor : ProjectileBase
     }
     protected override void ScheduleDestroyTime(float time)
     {
-        _objectPooling.AsteroidAnchorPool.EraseObject(gameObject, time);
+
+        switch(_stickingAnchor.SpaceshipAnchorIndexGetter())
+        {
+            case 0:
+                _objectPooling.AsteroidAnchorLeftPool.EraseObject(gameObject, time);
+                break;
+            case 1:
+                _objectPooling.AsteroidAnchorRightPool.EraseObject(gameObject, time);
+                break;
+        }
     }
     protected override void OnHit(Collision collision)
     {
@@ -28,11 +42,15 @@ public class AsteroidAnchor : ProjectileBase
             Quaternion normalVector = Quaternion.LookRotation(invertedNormal);
             Vector3 interceptVector = interceptPoint.point + invertedNormal * _asteroidStickingAnchorDepth;
 
-            GameObject stickingAnchor = _objectPooling.AsteroidStickingAnchorPool.SpawnObject(interceptVector, normalVector);
-            stickingAnchor.transform.SetParent(collision.gameObject.transform);
-            stickingAnchor.AddComponent<StickingAnchor>().AnchorIndexSetter(_anchorIndex);
+            _meshFilter.mesh = _stickingAnchorMesh;
+            _meshRenderer.material = _stickingAnchorMaterial;
+            Destroy(_rigidbody);
+            Destroy(_collider);
+            Destroy(_trailRenderer);
+            transform.SetParent(collision.gameObject.transform);
 
-            ScheduleDestroyTime(_postHitDestroyTime);
+            transform.position = interceptVector;
+            transform.rotation = normalVector;
 
         }
         else

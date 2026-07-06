@@ -18,8 +18,8 @@ public abstract class ProjectileBase: MonoBehaviour
     protected bool destroyScheduled = false;
 
     [Header("Components")]
-    [SerializeField] private Rigidbody _rigidbody;
-    [SerializeField] private TrailRenderer _trailRenderer;
+    [SerializeField] protected Rigidbody _rigidbody;
+    [SerializeField] protected TrailRenderer _trailRenderer;
 
     [Header("Homing")]
     private Transform _targetObject;
@@ -77,7 +77,7 @@ public abstract class ProjectileBase: MonoBehaviour
     protected virtual void Movement()
     {
         if (!_movementEnabled) return;
-        
+
         if (_homingEnabled)
         {
             if (_targetObject == null) return;

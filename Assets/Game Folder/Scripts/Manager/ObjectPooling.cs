@@ -11,15 +11,14 @@ public class ObjectPooling : MonoBehaviour
     [SerializeField] private int _cannonballPreloadCount = 10;
     public GenericPoolSystem<ProjectileBase> CannonballPool {  get; private set; }
 
-    [Header("Asteroid Anchor")]
-    [SerializeField] private GameObject _asteroidAnchorPrefab;
+    [Header("Asteroid Anchor Left")]
+    [SerializeField] private GameObject _asteroidAnchorLeftPrefab;
     [SerializeField] private int _asteroidAncorPreloadCount = 10;
-    public GenericPoolSystem<ProjectileBase> AsteroidAnchorPool { get; private set; }
+    public GenericPoolSystem<ProjectileBase> AsteroidAnchorLeftPool { get; private set; }
 
-    [Header("Asteroid Sticking Anchor")]
-    [SerializeField] private GameObject _asteroidStickingAnchorPrefab;
-    [SerializeField] private int _asteroidStickingAncorPreloadCount = 10;
-    public GenericPoolSystem AsteroidStickingAnchorPool { get; private set; }
+    [Header("Asteroid Anchor Right")]
+    [SerializeField] private GameObject _asteroidAnchorRightPrefab;
+    public GenericPoolSystem<ProjectileBase> AsteroidAnchorRightPool { get; private set; }
 
     [Header("Explosion")]
     [SerializeField] private GameObject _explosionPrefab;
@@ -42,8 +41,8 @@ public class ObjectPooling : MonoBehaviour
     private void Start()
     {
         CannonballPool = new GenericPoolSystem<ProjectileBase>(_cannonballPrefab, _cannonballPreloadCount);
-        AsteroidAnchorPool = new GenericPoolSystem<ProjectileBase>(_asteroidAnchorPrefab,_asteroidAncorPreloadCount);
-        AsteroidStickingAnchorPool = new GenericPoolSystem(_asteroidStickingAnchorPrefab,_asteroidStickingAncorPreloadCount);
+        AsteroidAnchorLeftPool = new GenericPoolSystem<ProjectileBase>(_asteroidAnchorLeftPrefab, _asteroidAncorPreloadCount);
+        AsteroidAnchorRightPool = new GenericPoolSystem<ProjectileBase>(_asteroidAnchorRightPrefab, _asteroidAncorPreloadCount);
         ExplosionPool = new GenericPoolSystem(_explosionPrefab, _explosionPreloadCount);
     }
 }
