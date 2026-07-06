@@ -1187,8 +1187,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpaceshipMovement
   _spaceshipRigidbody: {fileID: 246566353}
   _spaceshipMesh: {fileID: 166236462}
-  _cannons: {fileID: 682506977}
-  _VFX: {fileID: 1668964954}
+  _spaceshipModules:
+  - {fileID: 682506977}
+  - {fileID: 1668964954}
+  - {fileID: 517730680}
   _lowThrottle: 10
   _moderateThrottle: 50
   _highThrottle: 100
@@ -3193,6 +3195,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 517730680}
+  - component: {fileID: 517730681}
   m_Layer: 7
   m_Name: Ship Anchors
   m_TagString: Player
@@ -3217,6 +3220,21 @@ Transform:
   - {fileID: 413024001}
   m_Father: {fileID: 246566351}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &517730681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517730679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40fc95932c81c884bb3422baa1b143a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpaceshipAnchor
+  _spaceshipAnchorTransforms:
+  - {fileID: 1560917591}
+  - {fileID: 413024001}
 --- !u!1 &535577954
 GameObject:
   m_ObjectHideFlags: 0
@@ -8843,8 +8861,8 @@ Rigidbody:
   m_GameObject: {fileID: 1834686873}
   serializedVersion: 5
   m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0
+  m_LinearDamping: 1
+  m_AngularDamping: 1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}

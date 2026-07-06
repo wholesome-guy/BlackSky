@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Cannon Base Material
-  m_Shader: {fileID: -6465566751694194690, guid: e2363ba702c23074bbe8cf1e08406054,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: e2363ba702c23074bbe8cf1e08406054, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -44,7 +43,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_Map:
-        m_Texture: {fileID: 2800000, guid: ed03325506907c64c81a01190f06e425, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:

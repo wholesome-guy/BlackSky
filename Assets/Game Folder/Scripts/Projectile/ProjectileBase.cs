@@ -6,6 +6,8 @@ public abstract class ProjectileBase: MonoBehaviour
     [Header("Thrust and Torque")]
     [SerializeField] private float _homingThrust = 1000;
     [SerializeField] private float _forwardThrust = 10;
+
+    protected bool _movementEnabled = true;
     //[SerializeField] private float _torqueForce = 1000;
 
     [Header("Timers")]
@@ -74,6 +76,8 @@ public abstract class ProjectileBase: MonoBehaviour
     }
     protected virtual void Movement()
     {
+        if (!_movementEnabled) return;
+        
         if (_homingEnabled)
         {
             if (_targetObject == null) return;
